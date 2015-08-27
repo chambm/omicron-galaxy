@@ -80,6 +80,8 @@ ENV WINEPREFIX=$HOME/.wine32 WINEARCH=win32
 
 USER root
 
+RUN mkdir /export/galaxy-cluster && chown galaxy:galaxy /export/galaxy-cluster
+
 # Updating genome informations from UCSC
 #RUN export GALAXY=/galaxy-central && sh ./cron/updateucsc.sh.sample
 
