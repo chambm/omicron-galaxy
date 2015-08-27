@@ -94,7 +94,7 @@ Vagrant.configure(2) do |config|
     # docker run --name bingomics -d -p 0.0.0.0:80:80 -p 0.0.0.0:8021:21 -p 0.0.0.0:8800:8800 -p 0.0.0.0:9009:9009 -p 0.0.0.0:9002:9002 -e "NONUSE=slurmd,slurmctld" -e "GALAXY_LOGGING=full" -v /export/:/export/ chambm/docker-bingomics-galaxy
     gateway.vm.provision "docker", run: "always" do |d|
       d.run "bingomics",
-        image: "chambm/docker-bingomics-galaxy",
+        image: "chambm/bingomics-galaxy",
         #cmd: "bash -l",
         daemonize: true,
         args: '-p 0.0.0.0:80:80 -p 0.0.0.0:8021:21 -p 0.0.0.0:8800:8800 -p 0.0.0.0:9009:9009 -p 0.0.0.0:9002:9002 -e "NONUSE=slurmd,slurmctld" -e "GALAXY_LOGGING=full" -v /export/:/export/',
