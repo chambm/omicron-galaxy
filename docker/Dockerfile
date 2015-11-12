@@ -17,7 +17,7 @@ RUN codename=$(lsb_release -c -s) && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 && \
     echo "deb http://ppa.launchpad.net/marutter/rdev/ubuntu $codename main" | tee -a /etc/apt/sources.list.d/marutter-rdev-$codename.list && \
     apt-get -qq update && \
-    apt-get install -y --no-install-recommends r-base cabextract build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev libhdf5-dev python-h5py libreadline-dev && \
+    apt-get install -y --no-install-recommends r-base cabextract build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libxml2-dev libexpat-dev libncurses-dev zlib1g-dev libhdf5-dev python-h5py libreadline-dev && \
     sudo -u galaxy ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)" && \
     echo export PATH=$PATH:/home/galaxy/.linuxbrew/bin >> /home/galaxy/.bashrc && \
     apt-get purge -y software-properties-common && \
@@ -43,12 +43,18 @@ RUN add-tool-shed --url 'http://testtoolshed.g2.bx.psu.edu/' --name 'Test Tool S
                        "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name idpqonvert" \
                        "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name idpassemble" \
                        "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name idpquery" \
-                       "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name msconvert"
+                       "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name msconvert" \
+                       "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name psm_to_sam" \
+                       "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name sam_to_bam" \
+                       "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name sam_merge"
+
+RUN install-repository "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name msgfplus"
 
 # The following commands will be executed as user galaxy
 USER galaxy
 
 # BASH_ENV tells bash what to do for non-interactive logins
+ADD .bashrc /home/galaxy/.bashrc
 ENV PATH=$PATH:/home/galaxy/.linuxbrew/bin BASH_ENV=/home/galaxy/.bashrc
 
 # Install planemo (will be installed in linuxbrew's bin directory)
