@@ -40,11 +40,11 @@ RUN R --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(ask=F
 # /etc/ssl/private can't be accessed from within container for some reason
 # (@andrewgodwin says it's something AUFS related)  - taken from https://github.com/orchardup/docker-postgresql/blob/master/Dockerfile
 # MCC: this seems necessary for the Docker Hub build, which must be using AUFS; my local builds using devicemapper work without this
-cp -r /etc/ssl /tmp/ssl-copy/
-chmod -R 0700 /etc/ssl
-chown -R postgres /tmp/ssl-copy
-rm -r /etc/ssl
-mv /tmp/ssl-copy /etc/ssl
+RUN cp -r /etc/ssl /tmp/ssl-copy/ && \
+    chmod -R 0700 /etc/ssl && \
+    chown -R postgres /tmp/ssl-copy && \
+    rm -r /etc/ssl && \
+    mv /tmp/ssl-copy /etc/ssl
 
 # Install Bingomics tools into Galaxy
 RUN add-tool-shed --url 'http://testtoolshed.g2.bx.psu.edu/' --name 'Test Tool Shed' && \
