@@ -17,7 +17,7 @@ RUN codename=$(lsb_release -c -s) && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 && \
     echo "deb http://ppa.launchpad.net/marutter/rdev/ubuntu $codename main" | tee -a /etc/apt/sources.list.d/marutter-rdev-$codename.list && \
     apt-get -qq update && \
-    apt-get install -y --no-install-recommends r-base cabextract build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libxml2-dev libexpat-dev libncurses-dev zlib1g-dev libhdf5-dev python-h5py libreadline-dev && \
+    apt-get install -y --no-install-recommends r-base r-cran-rjson cabextract build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libxml2-dev libexpat-dev libncurses-dev zlib1g-dev libhdf5-dev python-h5py libreadline-dev && \
     sudo -u galaxy ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)" && \
     echo export PATH=$PATH:/home/galaxy/.linuxbrew/bin >> /home/galaxy/.bashrc && \
     apt-get purge -y software-properties-common && \
@@ -35,16 +35,16 @@ RUN codename=$(lsb_release -c -s) && \
 
 # Install BioConductor and proBAMr
 RUN R --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(ask=F)' && \
-    R --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(c("RGalaxy", "proBAMr"), ask=F)'
+    R --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(c("RGalaxy", "proBAMr", "customProDB"), ask=F)'
 
 # /etc/ssl/private can't be accessed from within container for some reason
 # (@andrewgodwin says it's something AUFS related)  - taken from https://github.com/orchardup/docker-postgresql/blob/master/Dockerfile
 # MCC: this seems necessary for the Docker Hub build, which must be using AUFS; my local builds using devicemapper work without this
-RUN cp -r /etc/ssl /tmp/ssl-copy/ && \
-    chmod -R 0700 /etc/ssl && \
-    chown -R postgres /tmp/ssl-copy && \
-    rm -r /etc/ssl && \
-    mv /tmp/ssl-copy /etc/ssl
+#RUN cp -r /etc/ssl /tmp/ssl-copy/ && \
+#    chmod -R 0700 /etc/ssl && \
+#    chown -R postgres /tmp/ssl-copy && \
+#    rm -r /etc/ssl && \
+#    mv /tmp/ssl-copy /etc/ssl
 
 # Install Bingomics tools into Galaxy
 RUN add-tool-shed --url 'http://testtoolshed.g2.bx.psu.edu/' --name 'Test Tool Shed' && \
@@ -54,6 +54,8 @@ RUN add-tool-shed --url 'http://testtoolshed.g2.bx.psu.edu/' --name 'Test Tool S
                        "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name idpquery" \
                        "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name msconvert" \
                        "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name psm_to_sam" \
+                       "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name custom_pro_db" \
+                       "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name custom_pro_db_annotation_data_manager" \
                        "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name sam_to_bam" \
                        "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name sam_merge"
 
