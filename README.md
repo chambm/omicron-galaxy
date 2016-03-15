@@ -1,2 +1,2 @@
-# docker-bingomics-galaxy
-A docker container for the Zhang Lab's proteogenomics-oriented Galaxy instance.
+# omicron-galaxy
+A Docker container for Omicron, a proteogenomics-oriented Galaxy flavor developed by the Zhang Lab at Vanderbilt.
