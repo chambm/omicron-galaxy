@@ -1,4 +1,4 @@
-# Galaxy - Bingomics
+# Galaxy - Omicron
 #
 # VERSION       Galaxy-central
 
@@ -46,7 +46,14 @@ RUN R --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(ask=F
 #    rm -r /etc/ssl && \
 #    mv /tmp/ssl-copy /etc/ssl
 
-# Install Bingomics tools into Galaxy
+# Install standard Omicron tools into Galaxy
+RUN install-repository "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name data_manager_sam_fasta_index_builder" \
+                       "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name data_manager_fetch_genome_all_fasta" \
+                       "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name samtools_mpileup" \
+                       "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name sam_to_bam" \
+                       "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name sam_merge"
+
+# Install custom Omicron tools into Galaxy
 RUN add-tool-shed --url 'http://testtoolshed.g2.bx.psu.edu/' --name 'Test Tool Shed' && \
     install-repository "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name myrimatch" \
                        "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name idpqonvert" \
@@ -55,9 +62,7 @@ RUN add-tool-shed --url 'http://testtoolshed.g2.bx.psu.edu/' --name 'Test Tool S
                        "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name msconvert" \
                        "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name psm_to_sam" \
                        "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name custom_pro_db" \
-                       "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name custom_pro_db_annotation_data_manager" \
-                       "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name sam_to_bam" \
-                       "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name sam_merge"
+                       "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name custom_pro_db_annotation_data_manager" 
 
 RUN install-repository "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name msgfplus"
 
@@ -71,7 +76,7 @@ ENV PATH=$PATH:/home/galaxy/.linuxbrew/bin BASH_ENV=/home/galaxy/.bashrc
 # Install planemo (will be installed in linuxbrew's bin directory)
 RUN brew tap galaxyproject/tap && brew install planemo --HEAD
 
-ENV GALAXY_CONFIG_BRAND="Bingomics" \
+ENV GALAXY_CONFIG_BRAND="Omicron" \
     GALAXY_CONFIG_JOB_WORKING_DIRECTORY=/export/galaxy-cluster/job_working_directory \
     GALAXY_CONFIG_FILE_PATH=/export/galaxy-central/database/files \
     GALAXY_CONFIG_NEW_FILE_PATH=/export/galaxy-central/database/files \
