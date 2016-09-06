@@ -27,6 +27,7 @@ Vagrant.configure(2) do |config|
     # Forward ports
     gateway.vm.network :forwarded_port, guest: 80, host: 8080
     gateway.vm.network :forwarded_port, guest: 9009, host: 8090
+    gateway.vm.network :forwarded_port, guest: 9090, host: 9090
     gateway.vm.network :forwarded_port, guest: 8021, host: 8021
 
     # VirtualBox settings
@@ -63,6 +64,7 @@ Vagrant.configure(2) do |config|
     gateway.vm.synced_folder "export/src", "/export/src", create: true
     gateway.vm.synced_folder "export/data", "/export/data", create: true
     gateway.vm.synced_folder "../docker", "/export/docker", create: true
+    gateway.vm.synced_folder "../cfncluster", "/export/cfncluster", create: true
 
     #gateway.vm.provision "shell", run: "always", inline: "umount export_galaxy-central; mount -t vboxsf -o uid=1450,gid=1450,fmode=0755,dmode=0755 export_galaxy-central /export/galaxy-central"
     gateway.vm.provision "shell", run: "always", inline: "umount export_src; mount -t vboxsf -o uid=1450,gid=1450,fmode=0755,dmode=0755 export_src /export/src"
@@ -94,11 +96,11 @@ Vagrant.configure(2) do |config|
     
     # docker run --name bingomics -d -p 0.0.0.0:80:80 -p 0.0.0.0:8021:21 -p 0.0.0.0:8800:8800 -p 0.0.0.0:9009:9009 -p 0.0.0.0:9002:9002 -e "NONUSE=slurmd,slurmctld" -e "GALAXY_LOGGING=full" -v /export/:/export/ chambm/bingomics-galaxy
     gateway.vm.provision "docker", run: "always" do |d|
-      d.run "bingomics",
-        image: "chambm/bingomics-galaxy",
+      d.run "omicron",
+        image: "chambm/omicron-galaxy",
         #cmd: "bash -l",
         daemonize: true,
-        args: '-p 0.0.0.0:80:80 -p 0.0.0.0:8021:21 -p 0.0.0.0:8800:8800 -p 0.0.0.0:9009:9009 -p 0.0.0.0:9002:9002 -e "NONUSE=slurmd,slurmctld" -e "GALAXY_LOGGING=full" -v /export/:/export/',
+        args: '-p 0.0.0.0:80:80 -p 0.0.0.0:8021:21 -p 0.0.0.0:8800:8800 -p 0.0.0.0:9009:9009 -p 0.0.0.0:9002:9002 -p 0.0.0.0:9090:9090 -e "NONUSE=slurmd,slurmctld" -e "GALAXY_LOGGING=full" -v /export/:/export/',
         restart: "always"
     end
   end

@@ -46,12 +46,19 @@ RUN R --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(ask=F
 #    rm -r /etc/ssl && \
 #    mv /tmp/ssl-copy /etc/ssl
 
+# Note: do not install files to volumes from the Dockerfile; they won't persist
+ENV GALAXY_CONFIG_TOOL_DEPENDENCY_DIR=/galaxy-central/tool_deps \
+    GALAXY_DESTINATIONS_DEFAULT=slurm_cluster
+
 # Install standard Omicron tools into Galaxy
 RUN install-repository "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name data_manager_sam_fasta_index_builder" \
                        "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name data_manager_fetch_genome_all_fasta" \
                        "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name samtools_mpileup" \
                        "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name sam_to_bam" \
                        "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name sam_merge"
+
+# Test that the tools are persisting
+RUN stat $GALAXY_ROOT/../shed_tools/*
 
 # Install custom Omicron tools into Galaxy
 RUN add-tool-shed --url 'http://testtoolshed.g2.bx.psu.edu/' --name 'Test Tool Shed' && \
@@ -64,7 +71,13 @@ RUN add-tool-shed --url 'http://testtoolshed.g2.bx.psu.edu/' --name 'Test Tool S
                        "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name custom_pro_db" \
                        "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name custom_pro_db_annotation_data_manager" 
 
-RUN install-repository "--url http://testtoolshed.g2.bx.psu.edu/ -o galaxyp --name msgfplus"
+RUN install-repository "--url http://toolshed.g2.bx.psu.edu/ -o galaxyp --name fasta_merge_files_and_filter_unique_sequences" \
+                       "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name tophat2" \
+                       "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name fastq_groomer" \
+                       "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name data_manager_bowtie2_index_builder" \
+                       "--url http://toolshed.g2.bx.psu.edu/ -o iuc --name bcftools" \
+                       "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name vcffilter" \
+                       "--url http://toolshed.g2.bx.psu.edu/ -o devteam --name bamtools"
 
 # The following commands will be executed as user galaxy
 USER galaxy
@@ -77,28 +90,26 @@ ENV PATH=$PATH:/home/galaxy/.linuxbrew/bin BASH_ENV=/home/galaxy/.bashrc
 RUN brew tap galaxyproject/tap && brew install planemo --HEAD
 
 ENV GALAXY_CONFIG_BRAND="Omicron" \
-    GALAXY_CONFIG_JOB_WORKING_DIRECTORY=/export/galaxy-cluster/job_working_directory \
-    GALAXY_CONFIG_FILE_PATH=/export/galaxy-central/database/files \
-    GALAXY_CONFIG_NEW_FILE_PATH=/export/galaxy-central/database/files \
-    GALAXY_CONFIG_TEMPLATE_CACHE_PATH=/galaxy-central/database/compiled_templates \
-    GALAXY_CONFIG_CITATION_CACHE_DATA_DIR=/galaxy-central/database/citations/data \
-    GALAXY_CONFIG_CLUSTER_FILES_DIRECTORY=/export/galaxy-cluster/pbs \
-    GALAXY_CONFIG_FTP_UPLOAD_DIR=/export/galaxy-central/database/ftp \
-    GALAXY_CONFIG_FTP_UPLOAD_SITE=192.168.33.10 \
     ENABLE_TTS_INSTALL=True
 
-WORKDIR /galaxy-central
+WORKDIR $GALAXY_ROOT
 
 # set WINEPREFIX and WINEARCH for galaxy user
-ENV WINEPREFIX=$HOME/.wine32 WINEARCH=win32
+#ENV WINEPREFIX=$HOME/.wine32 WINEARCH=win32
 
 #RUN xvfb-run winetricks -q winxp vcrun2005 win7 vcrun2008 vcrun2010 vcrun2012 vcrun2013
 #RUN xvfb-run winetricks -q dotnet35sp1 dotnet40
 
-
 USER root
 
-RUN mkdir /export/galaxy-cluster && chown galaxy:galaxy /export/galaxy-cluster
+COPY *.ga /tmp/
+COPY import_workflow.sh /usr/bin/import-workflow
+RUN import-workflow /tmp/Omicron-Workflow-3b_Myrimatch_for_label-free.ga \
+                    /tmp/Omicron-Workflow-3a_Create_sample-specific_protein_FASTAs.ga \
+                    /tmp/Omicron-Workflow-2_Index_hg19_genome.ga \
+                    /tmp/Omicron-Workflow-1_Download_hg19_reference_genome.ga
+                    
+                    
 
 # Updating genome informations from UCSC
 #RUN export GALAXY=/galaxy-central && sh ./cron/updateucsc.sh.sample
