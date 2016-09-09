@@ -7,11 +7,6 @@ if (grep -q "MasterServer" /var/log/cfn-wire.log); then
   chkconfig --level 2345 httpd off
   service httpd stop
 
-  #umount /dev/xvdb
-  #btrfs-convert /dev/xvdb
-  #sed -i.bak 's/\/export ext4 _netdev/\/export btrfs defaults,ssd,_netdev/' /etc/fstab
-  #mount -a
-
   yum install docker -y
   service docker start
   gpasswd -a ec2-user docker
@@ -24,7 +19,7 @@ if (grep -q "MasterServer" /var/log/cfn-wire.log); then
     -v /opt/slurm/:/opt/slurm/
     -v /etc/munge:/etc/munge
     -e GALAXY_CONFIG_FTP_UPLOAD_SITE=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
-    chambm/omicron-cfncluster
+    chambm/omicron-simple-cfncluster
 
   docker exec omicron find / -uid 104 -exec chown -h $(id -u munge) {} +
   docker exec omicron usermod -u $(id -u munge) munge
@@ -36,15 +31,11 @@ if (grep -q "MasterServer" /var/log/cfn-wire.log); then
   rm -f /galaxy_venv/python*
   virtualenv --always-copy --relocatable /galaxy_venv
 
-  Rscript --vanilla -e "install.packages(c('optparse', 'rjson'), repos='http://cran.rstudio.com/')"
-  Rscript --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(ask=F)'
-  Rscript --vanilla -e 'source("https://raw.githubusercontent.com/chambm/devtools/master/R/easy_install.R"); devtools::install_github("chambm/customProDB")'
-  Rscript --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(c("RGalaxy", "proBAMr"), ask=F)'
-  tar cJf /export/R-lib.tar.xz /usr/lib64/R/library
-
 else
   echo Compute
 
-  cp -p /export/R-lib.tar.xz / && pushd / && tar xJf R-lib.tar.xz && popd
-
+  useradd -u 1450 galaxy
+  ln -s /export/galaxy-central /galaxy-central
+  ln -s /export/shed_tools /shed_tools
+  ln -s /export/galaxy_venv /galaxy_venv
 fi

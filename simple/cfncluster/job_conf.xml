@@ -1,0 +1,41 @@
+<job_conf>
+    <plugins workers="4">
+        <!--<plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner" workers="2"/>-->
+        <plugin id="slurm" type="runner" load="galaxy.jobs.runners.slurm:SlurmJobRunner">
+            <param id="drmaa_library_path">/usr/local/lib/libdrmaa.so</param>
+            <param id="invalidjobexception_state">error</param>
+            <param id="invalidjobexception_retries">16</param>
+            <param id="internalexception_state">error</param>
+            <param id="internalexception_retries">16</param>
+        </plugin>
+    </plugins>
+    <handlers default="handlers">
+        <handler id="handler0" tags="handlers"/>
+        <handler id="handler1" tags="handlers"/>
+    </handlers>
+    <destinations default="cluster">
+        <destination id="cluster" runner="slurm">
+            <param id="nativeSpecification">--time=24:00:00 --mem-per-cpu=4092 -s --ntasks=2</param>
+            <param id="embed_metadata_in_job">False</param>
+            <env id="GALAXY_SLOTS">4</env>
+            <env file="/galaxy_venv/bin/activate" />
+        </destination>
+    </destinations>
+    <tools>
+        <!-- all tools go to the CfnCluster
+        <tool id="myrimatch" destination="cluster"/>
+        <tool id="samtools_mpileup" destination="cluster"/>
+        <tool id="custom_pro_db" destination="cluster"/>
+        <tool id="custom_pro_db_annotation_data_manager" destination="cluster"/>
+        <tool id="bowtie2_index_builder_data_manager" destination="cluster"/>
+        <tool id="psm_to_sam" destination="cluster"/>
+        <tool id="tophat2" destination="cluster"/>
+        <tool id="bcftools_view" destination="cluster"/>
+        <tool id="idpqonvert" destination="cluster"/>
+        <tool id="idpassemble" destination="cluster"/>
+        <tool id="idpquery" destination="cluster"/>
+        -->
+    </tools>
+    <limits>
+    </limits>
+</job_conf>
