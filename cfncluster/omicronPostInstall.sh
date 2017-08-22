@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 if (grep -q "MasterServer" /var/log/cfn-wire.log); then
   echo Master
@@ -19,11 +20,11 @@ if (grep -q "MasterServer" /var/log/cfn-wire.log); then
   ln -s /export/galaxy-central /galaxy-central
   ln -s /export/shed_tools /shed_tools
 
-  docker run --name omicron -d --restart=on-failure:10 --net=host
-    -v /export/:/export/
-    -v /opt/slurm/:/opt/slurm/
-    -v /etc/munge:/etc/munge
-    -e GALAXY_CONFIG_FTP_UPLOAD_SITE=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+  docker run --name omicron -d --restart=on-failure:10 --net=host \
+    -v /export/:/export/ \
+    -v /opt/slurm/:/opt/slurm/ \
+    -v /etc/munge:/etc/munge \
+    -e GALAXY_CONFIG_FTP_UPLOAD_SITE=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) \
     chambm/omicron-cfncluster
 
   docker exec omicron find / -uid 104 -exec chown -h $(id -u munge) {} +
