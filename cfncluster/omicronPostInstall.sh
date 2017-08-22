@@ -36,10 +36,10 @@ if (grep -q "MasterServer" /var/log/cfn-wire.log); then
   rm -f /galaxy_venv/python*
   virtualenv --always-copy --relocatable /galaxy_venv
 
-  Rscript --vanilla -e "install.packages(c('optparse', 'rjson'), repos='http://cran.rstudio.com/')"
-  Rscript --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(ask=F)'
-  Rscript --vanilla -e 'source("https://raw.githubusercontent.com/chambm/devtools/master/R/easy_install.R"); devtools::install_github("chambm/customProDB")'
-  Rscript --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(c("RGalaxy", "proBAMr"), ask=F)'
+  #Rscript --vanilla -e "install.packages(c('optparse', 'rjson'), repos='http://cran.rstudio.com/')"
+  #Rscript --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(ask=F)'
+  #Rscript --vanilla -e 'source("https://raw.githubusercontent.com/chambm/devtools/master/R/easy_install.R"); devtools::install_github("chambm/customProDB")'
+  #Rscript --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(c("RGalaxy", "proBAMr"), ask=F)'
   tar cJf /export/R-lib.tar.xz /usr/lib64/R/library
 
 else
