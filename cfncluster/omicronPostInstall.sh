@@ -27,7 +27,7 @@ if (grep -q "MasterServer" /var/log/cfn-wire.log); then
     -e GALAXY_CONFIG_FTP_UPLOAD_SITE=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) \
     chambm/omicron-cfncluster
 
-  docker exec omicron find / -uid 104 -exec chown -h $(id -u munge) {} + || 1
+  docker exec omicron find / -uid 104 -exec chown -h $(id -u munge) {} + || true
   docker exec omicron usermod -u $(id -u munge) munge
   docker exec omicron usermod -u $(id -u slurm) slurm
   docker exec omicron service munge start
