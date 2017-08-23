@@ -29,7 +29,7 @@ if (grep -q "MasterServer" /var/log/cfn-wire.log); then
 
   while
     echo "Waiting for Galaxy to start"
-    [[ sh -c "docker exec omicron supervisorctl status galaxy:galaxy_web | grep RUNNING" ]]
+    [[ $(docker exec omicron supervisorctl status galaxy:galaxy_web | grep -o RUNNING) != "RUNNING" ]]
   do
     sleep 1
   done
