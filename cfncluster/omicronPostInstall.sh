@@ -57,5 +57,9 @@ fi
 if [ "$cfn_node_type" == "ComputeFleet" ]; then
   echo Compute
   #cp -p /export/R-lib.tar.xz / && pushd / && tar xJf R-lib.tar.xz && popd
+  useradd -u 1450 galaxy
+  ln -s /export/galaxy-central /galaxy-central
+  ln -s /export/shed_tools /shed_tools
+  #ln -s /export/galaxy_venv /galaxy_venv
 fi
 
