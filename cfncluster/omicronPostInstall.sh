@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e
+. /opt/cfncluster/cfnconfig
 
-if (grep -q "MasterServer" /var/log/cfn-wire.log); then
+if [ "$cfn_node_type" == "MasterServer" ]; then
   echo Master
 
   #echo manual | sudo tee /etc/init.d/httpd.override
@@ -17,8 +18,8 @@ if (grep -q "MasterServer" /var/log/cfn-wire.log); then
   service docker start
   gpasswd -a ec2-user docker
   useradd -u 1450 galaxy
-  ln -s /export/galaxy-central /galaxy-central
-  ln -s /export/shed_tools /shed_tools
+  #ln -s /export/galaxy-central /galaxy-central
+  #ln -s /export/shed_tools /shed_tools
 
   docker run --name omicron -d --restart=on-failure:10 --net=host \
     -v /export/:/export/ \
@@ -51,9 +52,10 @@ if (grep -q "MasterServer" /var/log/cfn-wire.log); then
   #Rscript --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(c("RGalaxy", "proBAMr"), ask=F)'
   #tar cJf /export/R-lib.tar.xz /usr/lib64/R/library
 
-else
+fi 
+
+if [ "$cfn_node_type" == "ComputeFleet" ]; then
   echo Compute
-
   #cp -p /export/R-lib.tar.xz / && pushd / && tar xJf R-lib.tar.xz && popd
-
 fi
+
