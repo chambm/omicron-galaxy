@@ -21,12 +21,13 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
   #ln -s /export/galaxy-central /galaxy-central
   #ln -s /export/shed_tools /shed_tools
 
-  docker run --name omicron -d --restart=on-failure:10 --net=host \
+  # --privileged required for autofs/cvmfs to work
+  docker run --name omicron -d --restart=on-failure:10 --net=host --privileged \
     -v /export/:/export/ \
     -v /opt/slurm/:/opt/slurm/ \
     -v /etc/munge:/etc/munge \
     -e GALAXY_CONFIG_FTP_UPLOAD_SITE=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) \
-    chambm/omicron-cfncluster
+    chambm/omicron-cfncluster:release_17.05
 
   while
     echo "Waiting for Galaxy to start"
@@ -61,5 +62,14 @@ if [ "$cfn_node_type" == "ComputeFleet" ]; then
   ln -s /export/galaxy-central /galaxy-central
   ln -s /export/shed_tools /shed_tools
   #ln -s /export/galaxy_venv /galaxy_venv
+  
+  mkdir /galaxy_venv
+  wget https://raw.githubusercontent.com/chambm/omicron-galaxy/update_17.05/cfncluster/requirements.txt -O /galaxy_venv/requirements.txt
+  chown -R $(id -u slurm):$(id -g slurm) /galaxy_venv
+  virtualenv /galaxy_venv
+  . /galaxy_venv/bin/activate
+  pip install --upgrade pip
+  pip install galaxy-lib
+  pip install -r /galaxy_venv/requirements.txt --index-url https://wheels.galaxyproject.org/simple
 fi
 
