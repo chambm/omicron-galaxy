@@ -52,8 +52,7 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
   #Rscript --vanilla -e 'source("https://raw.githubusercontent.com/chambm/devtools/master/R/easy_install.R"); devtools::install_github("chambm/customProDB")'
   #Rscript --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(c("RGalaxy", "proBAMr"), ask=F)'
   #tar cJf /export/R-lib.tar.xz /usr/lib64/R/library
-
-fi 
+fi
 
 if [ "$cfn_node_type" == "ComputeFleet" ]; then
   echo Compute
@@ -73,3 +72,4 @@ if [ "$cfn_node_type" == "ComputeFleet" ]; then
   pip install -r /galaxy_venv/requirements.txt --index-url https://wheels.galaxyproject.org/simple
 fi
 
+true
