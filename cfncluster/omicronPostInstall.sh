@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+#set -e
 . /opt/cfncluster/cfnconfig
 
 if [ "$cfn_node_type" == "MasterServer" ]; then
