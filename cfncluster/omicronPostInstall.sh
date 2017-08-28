@@ -72,10 +72,12 @@ if [ "$cfn_node_type" == "ComputeFleet" ]; then
   virtualenv /galaxy_venv
   . /galaxy_venv/bin/activate
   pip install --upgrade pip
-  pip install galaxy-lib ansible
+  pip install galaxy-lib
   pip install -r /galaxy_venv/requirements.txt --index-url https://wheels.galaxyproject.org/simple
+  deactivate
 
   # Download galaxy-extras role for CVMFS task
+  pip install ansible
   ansible-galaxy install git+https://github.com/galaxyproject/ansible-galaxy-extras.git,6ba80a218c1c7004c8d435c4b5a96b6235d53089
 
   # Create one-task playbook
@@ -90,6 +92,7 @@ EOF
 
   # Tweak CVMFS task to use yum
   sed -E -i.bak 's/apt: [^=]+=/yum: name=/' /etc/ansible/roles/ansible-galaxy-extras/tasks/cvmfs_client.yml
+  sed -E -i.bak 's/\.deb/.rpm/' /etc/ansible/roles/ansible-galaxy-extras/tasks/cvmfs_client.yml
   CVMFS_RPM="http://cvmrepo.web.cern.ch/cvmrepo/yum/cvmfs/EL/5/x86_64/cvmfs-2.1.20-1.el5.x86_64.rpm"
   CVMFS_CONFIG_RPM="http://cvmrepo.web.cern.ch/cvmrepo/yum/cvmfs/EL/6/x86_64/cvmfs-config-default-1.2-2.noarch.rpm"
 
