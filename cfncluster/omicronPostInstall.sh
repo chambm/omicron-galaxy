@@ -35,6 +35,7 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
   
   # Copy slurm_prolog.sh script to shared path and edit slurm.conf to use the prolog for fully caching input files on compute nodes
   docker cp omicron:/usr/bin/slurm_prolog.sh /export
+  chmod a=rx /export/slurm_prolog.sh
   sed -i.bak "s/#Prolog=/Prolog=/export/slurm_prolog.sh" /etc/fstab
 
   # Edit user and group permissions in the docker container to match cfncluster

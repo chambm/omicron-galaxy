@@ -2,7 +2,7 @@
 #
 # VERSION       Galaxy-central
 
-FROM chambm/omicron-galaxy
+FROM chambm/omicron-galaxy:release_17.05
 
 MAINTAINER Matt Chambers, matt.chambers@vanderbilt.edu
 
@@ -27,25 +27,18 @@ RUN mkdir /src && cd /src && curl http://apps.man.poznan.pl/trac/slurm-drmaa/dow
     rm -fr /src
 
 ADD job_conf.xml $GALAXY_CONFIG_JOB_CONFIG_FILE
+ADD slurm_prolog.sh /usr/bin/
 ENV DRMAA_LIBRARY_PATH=/usr/local/lib/libdrmaa.so
 
-# 1. Set passive port range for proFTPd (this port range must match the ports opened by the CFN template)
-# 2. Add 'Input is VCF' option to the bcftools_view tool
-# 3. Change upload directory in nginx.conf
-# 4. Make TopHat2 wrapper ignore Exception and Error messages in the log text - only non-zero exit code will be fatal.
-RUN sed -i.bak 's/^\(PassivePorts\).*/\1 30000 30100/' /etc/proftpd/proftpd.conf && \
-    sed -i.bak 's/$varsitesonly/$S $varsitesonly/' $GALAXY_ROOT/../shed_tools/toolshed.g2.bx.psu.edu/repos/iuc/bcftools/e5e78d1e09a6/bcftools/bcftools_view.xml && \
-    sed -i.bak 's/\(        <param name="input" type="data" format="bcf,vcf" label="Choose a bcf file to view" \/>\)/\1\n        <param name="S" type="boolean" truevalue="-S" falsevalue="" checked="False" label="Input is VCF" help="-S" \/>/' $GALAXY_ROOT/../shed_tools/toolshed.g2.bx.psu.edu/repos/iuc/bcftools/e5e78d1e09a6/bcftools/bcftools_view.xml && \
-    sed -i.bak "s/upload_store \/tmp\/nginx_upload_store/upload_store \/export\/nginx_upload_store/" /etc/nginx/nginx.conf && \
-    sed -i.bak 's/\(\s*\)\(<regex match="Exception|Error" source="both"\) level="fatal" description="Tool execution failed"/\1<exit_code range="1:" level="fatal" description="Tool execution failed" \/>\n\1\2 level="log" description="Warning"/' $GALAXY_ROOT/../shed_tools/toolshed.g2.bx.psu.edu/repos/devteam/tophat2/758594ed0364/tophat2/tophat2_wrapper.xml
-
-# Make Galaxy venv relocatable and use copies instead of  links
-RUN virtualenv --always-copy --relocatable $GALAXY_VIRTUAL_ENV
+# 1. Change upload directory in nginx.conf
+# 2. Change SFTP to use port 8022
+RUN sed -i.bak "s/upload_store \/tmp\/nginx_upload_store/upload_store \/export\/nginx_upload_store/" /etc/nginx/nginx.conf && \
+    sed -i.bak "s/\(\s*Port\s*\) 22/\1 8022/" /etc/proftpd/proftpd.conf
 
 VOLUME ["/export/", "/data/", "/var/lib/docker"]
 
-# Expose port 80 (webserver), 21 (FTP server), 8800 (Proxy), 9009 (toolshed)
-EXPOSE :80 :21 :8800 :9009
+# Expose port 80 (webserver), 21 (FTP server), 8022 (SFTP server)
+EXPOSE :80 :21 :8022
 
 # Autostart script that is invoked during container start
 CMD ["/usr/bin/startup"]
