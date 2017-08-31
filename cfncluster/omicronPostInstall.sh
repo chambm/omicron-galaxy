@@ -9,11 +9,6 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
   chkconfig --level 2345 httpd off
   service httpd stop
 
-  #umount /dev/xvdb
-  #btrfs-convert /dev/xvdb
-  #sed -i.bak 's/\/export ext4 _netdev/\/export btrfs defaults,ssd,_netdev/' /etc/fstab
-  #mount -a
-
   yum install docker -y
   service docker start
   gpasswd -a ec2-user docker
@@ -28,6 +23,7 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
     -v /etc/munge:/etc/munge \
     -e "NONUSE=reports,slurmd,slurmctld,condor" \
     -e GALAXY_CONFIG_FTP_UPLOAD_SITE=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) \
+    -e GALAXY_CONFIG_CLEANUP_JOB=onsuccess \
     chambm/omicron-cfncluster:release_17.05
 
   while
@@ -36,35 +32,30 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
   do
     sleep 1
   done
+  
+  # Copy slurm_prolog.sh script to shared path and edit slurm.conf to use the prolog for fully caching input files on compute nodes
+  docker cp omicron:/usr/bin/slurm_prolog.sh /export
+  sed -i.bak "s/#Prolog=/Prolog=/export/slurm_prolog.sh" /etc/fstab
 
+  # Edit user and group permissions in the docker container to match cfncluster
   container_munge_id=$(docker exec omicron id -u munge)
   docker exec omicron find / -uid $container_munge_id -exec chown -h $(id -u munge) {} + || true
   docker exec omicron usermod -u $(id -u munge) munge
   docker exec omicron usermod -u $(id -u slurm) slurm
   docker exec omicron service munge start
-  #docker exec omicron cp -pr /galaxy_venv /export/galaxy_venv
+
+  # Copy omicron-data CVMFS config files to shared path for compute nodes
   docker cp omicron:/etc/cvmfs/keys/omicron-data.duckdns.org.pub /export
   docker cp omicron:/etc/cvmfs/config.d/omicron-data.duckdns.org.conf /export
   docker cp omicron:/etc/cvmfs/default.local /export
-
-  #ln -s /export/galaxy_venv /galaxy_venv
-  #rm -f /galaxy_venv/python*
-  #virtualenv --always-copy --relocatable /galaxy_venv
-
-  #Rscript --vanilla -e "install.packages(c('optparse', 'rjson'), repos='http://cran.rstudio.com/')"
-  #Rscript --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(ask=F)'
-  #Rscript --vanilla -e 'source("https://raw.githubusercontent.com/chambm/devtools/master/R/easy_install.R"); devtools::install_github("chambm/customProDB")'
-  #Rscript --vanilla -e 'source("http://bioconductor.org/biocLite.R"); biocLite(c("RGalaxy", "proBAMr"), ask=F)'
-  #tar cJf /export/R-lib.tar.xz /usr/lib64/R/library
 fi
 
 if [ "$cfn_node_type" == "ComputeFleet" ]; then
   echo Compute
-  #cp -p /export/R-lib.tar.xz / && pushd / && tar xJf R-lib.tar.xz && popd
+
   useradd -u 1450 galaxy
   ln -s /export/galaxy-central /galaxy-central
   ln -s /export/shed_tools /shed_tools
-  #ln -s /export/galaxy_venv /galaxy_venv
 
   mkdir /galaxy_venv
   wget https://raw.githubusercontent.com/chambm/omicron-galaxy/update_17.05/cfncluster/requirements.txt -O /galaxy_venv/requirements.txt
@@ -104,11 +95,15 @@ EOF
   cp /export/omicron-data.duckdns.org.conf /etc/cvmfs/config.d
   cp /export/default.local /etc/cvmfs
 
+  # Use NFS version 4 instead of 3
+  sed -i.bak "s/\(vers=3/vers=4/" /etc/fstab
+  sed -i.bak "s/\(export.*_netdev\)/\1,fsc/" /etc/fstab
+
   # Install cachefilesd and enable FS-Cache for shared NFS mount
   yum install -y cachefilesd
   chkconfig cachefilesd on
-  sed -i.bak "s/\(export.*_netdev\)/\1,fsc/" /etc/fstab
   service cachefilesd start
+  umount /export
   mount -a
 fi
 
