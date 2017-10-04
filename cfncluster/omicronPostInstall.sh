@@ -97,7 +97,7 @@ EOF
   cp /export/default.local /etc/cvmfs
 
   # Use NFS version 4 instead of 3
-  sed -i.bak "s/\(vers=3/vers=4/" /etc/fstab
+  sed -i.bak "s/\(vers=3\)/vers=4/" /etc/fstab
   sed -i.bak "s/\(export.*_netdev\)/\1,fsc/" /etc/fstab
 
   # Install cachefilesd and enable FS-Cache for shared NFS mount
