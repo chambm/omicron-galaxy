@@ -1,0 +1,441 @@
+{
+    "a_galaxy_workflow": "true", 
+    "annotation": "", 
+    "format-version": "0.1", 
+    "name": "Create sample-specific protein FASTAs (paired-end collection hg38, HISAT2/FreeBayes)", 
+    "steps": {
+        "0": {
+            "annotation": "", 
+            "content_id": null, 
+            "errors": null, 
+            "id": 0, 
+            "input_connections": {}, 
+            "inputs": [], 
+            "label": "Input paired-end FASTQ collection", 
+            "name": "Input dataset collection", 
+            "outputs": [], 
+            "position": {
+                "left": 208, 
+                "top": 159
+            }, 
+            "tool_id": null, 
+            "tool_state": "{\"collection_type\": \"list:paired\"}", 
+            "tool_version": null, 
+            "type": "data_collection_input", 
+            "uuid": "f31dff76-8f71-4751-ae2f-9606a03e07ad", 
+            "workflow_outputs": [
+                {
+                    "label": null, 
+                    "output_name": "output", 
+                    "uuid": "003c5e21-419d-45ac-9492-f1654bca0d68"
+                }
+            ]
+        }, 
+        "1": {
+            "annotation": "", 
+            "content_id": null, 
+            "errors": null, 
+            "id": 1, 
+            "input_connections": {}, 
+            "inputs": [
+                {
+                    "description": "", 
+                    "name": "Input Gene Annotations"
+                }
+            ], 
+            "label": "Input Gene Annotations", 
+            "name": "Input dataset", 
+            "outputs": [], 
+            "position": {
+                "left": 229, 
+                "top": 260
+            }, 
+            "tool_id": null, 
+            "tool_state": "{\"name\": \"Input Gene Annotations\"}", 
+            "tool_version": null, 
+            "type": "data_input", 
+            "uuid": "70c207c5-fe4c-41d8-b398-d94c68677cbb", 
+            "workflow_outputs": [
+                {
+                    "label": null, 
+                    "output_name": "output", 
+                    "uuid": "1b13bf76-3097-4e93-a8b0-6df4e7bd57dd"
+                }
+            ]
+        }, 
+        "2": {
+            "annotation": "", 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/hisat2/hisat2/2.1.0", 
+            "errors": null, 
+            "id": 2, 
+            "input_connections": {
+                "adv|spliced_options|known_splice_gtf": {
+                    "id": 1, 
+                    "output_name": "output"
+                }, 
+                "library|input_1": {
+                    "id": 0, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool HISAT2", 
+                    "name": "library"
+                }
+            ], 
+            "label": null, 
+            "name": "HISAT2", 
+            "outputs": [
+                {
+                    "name": "output_alignments", 
+                    "type": "bam"
+                }, 
+                {
+                    "name": "output_unaligned_reads_l", 
+                    "type": "fastqsanger"
+                }, 
+                {
+                    "name": "output_aligned_reads_l", 
+                    "type": "fastqsanger"
+                }, 
+                {
+                    "name": "output_unaligned_reads_r", 
+                    "type": "fastqsanger"
+                }, 
+                {
+                    "name": "output_aligned_reads_r", 
+                    "type": "fastqsanger"
+                }, 
+                {
+                    "name": "summary_file", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 502, 
+                "top": 160
+            }, 
+            "post_job_actions": {
+                "HideDatasetActionoutput_aligned_reads_l": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_aligned_reads_l"
+                }, 
+                "HideDatasetActionoutput_aligned_reads_r": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_aligned_reads_r"
+                }, 
+                "HideDatasetActionoutput_alignments": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_alignments"
+                }, 
+                "HideDatasetActionoutput_unaligned_reads_l": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_unaligned_reads_l"
+                }, 
+                "HideDatasetActionoutput_unaligned_reads_r": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_unaligned_reads_r"
+                }, 
+                "HideDatasetActionsummary_file": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "summary_file"
+                }
+            }, 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/hisat2/hisat2/2.1.0", 
+            "tool_shed_repository": {
+                "changeset_revision": "21e8ea8e1adb", 
+                "name": "hisat2", 
+                "owner": "iuc", 
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            }, 
+            "tool_state": "{\"adv\": \"{\\\"alignment_options\\\": {\\\"__current_case__\\\": 0, \\\"alignment_options_selector\\\": \\\"defaults\\\"}, \\\"output_options\\\": {\\\"output_options_selector\\\": \\\"defaults\\\", \\\"__current_case__\\\": 0}, \\\"other_options\\\": {\\\"other_options_selector\\\": \\\"defaults\\\", \\\"__current_case__\\\": 0}, \\\"scoring_options\\\": {\\\"scoring_options_selector\\\": \\\"defaults\\\", \\\"__current_case__\\\": 0}, \\\"spliced_options\\\": {\\\"coefficient\\\": \\\"1.0\\\", \\\"canonical_penalty\\\": \\\"0\\\", \\\"no_spliced_alignment_options\\\": {\\\"no_spliced_alignment\\\": \\\"\\\", \\\"__current_case__\\\": 1}, \\\"nc_function_type\\\": \\\"G\\\", \\\"constant_term\\\": \\\"-8.0\\\", \\\"nc_coefficient\\\": \\\"1.0\\\", \\\"noncanonical_penalty\\\": \\\"12\\\", \\\"known_splice_gtf\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"nc_constant_term\\\": \\\"-8.0\\\", \\\"min_intron\\\": \\\"20\\\", \\\"function_type\\\": \\\"G\\\", \\\"__current_case__\\\": 1, \\\"notmplen\\\": \\\"false\\\", \\\"tma\\\": \\\"\\\", \\\"max_intron\\\": \\\"500000\\\", \\\"spliced_options_selector\\\": \\\"advanced\\\"}, \\\"reporting_options\\\": {\\\"reporting_options_selector\\\": \\\"defaults\\\", \\\"__current_case__\\\": 0}, \\\"input_options\\\": {\\\"input_options_selector\\\": \\\"defaults\\\", \\\"__current_case__\\\": 0}}\", \"__page__\": null, \"sum\": \"{\\\"new_summary\\\": \\\"true\\\", \\\"summary_file\\\": \\\"true\\\"}\", \"library\": \"{\\\"rna_strandness\\\": \\\"\\\", \\\"type\\\": \\\"paired_collection\\\", \\\"paired_options\\\": {\\\"paired_options_selector\\\": \\\"defaults\\\", \\\"__current_case__\\\": 0}, \\\"__current_case__\\\": 2, \\\"input_1\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}}\", \"reference_genome\": \"{\\\"source\\\": \\\"indexed\\\", \\\"__current_case__\\\": 0, \\\"index\\\": \\\"hg38\\\"}\", \"__rerun_remap_job_id__\": null}", 
+            "tool_version": "2.1.0", 
+            "type": "tool", 
+            "uuid": "216417d8-ecac-496c-b342-244fc112e02a", 
+            "workflow_outputs": []
+        }, 
+        "3": {
+            "annotation": "", 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/devteam/freebayes/freebayes/1.1.0-1", 
+            "errors": null, 
+            "id": 3, 
+            "input_connections": {
+                "reference_source|batchmode|input_bams": {
+                    "id": 2, 
+                    "output_name": "output_alignments"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "FreeBayes", 
+            "outputs": [
+                {
+                    "name": "output_vcf", 
+                    "type": "vcf"
+                }, 
+                {
+                    "name": "output_failed_alleles_bed", 
+                    "type": "bed"
+                }, 
+                {
+                    "name": "output_trace", 
+                    "type": "txt"
+                }
+            ], 
+            "position": {
+                "left": 816, 
+                "top": 492
+            }, 
+            "post_job_actions": {
+                "HideDatasetActionoutput_failed_alleles_bed": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_failed_alleles_bed"
+                }, 
+                "HideDatasetActionoutput_trace": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_trace"
+                }, 
+                "RenameDatasetActionoutput_failed_alleles_bed": {
+                    "action_arguments": {
+                        "newname": "#{reference_source.input_bams|basename}.failed-alleles-bed"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output_failed_alleles_bed"
+                }, 
+                "RenameDatasetActionoutput_trace": {
+                    "action_arguments": {
+                        "newname": "#{reference_source.input_bams|basename}.freebayes-log"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output_trace"
+                }, 
+                "RenameDatasetActionoutput_vcf": {
+                    "action_arguments": {
+                        "newname": "#{reference_source.input_bams|basename}.vcf"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output_vcf"
+                }
+            }, 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/freebayes/freebayes/1.1.0-1", 
+            "tool_shed_repository": {
+                "changeset_revision": "977a5301b66d", 
+                "name": "freebayes", 
+                "owner": "devteam", 
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            }, 
+            "tool_state": "{\"__page__\": null, \"reference_source\": \"{\\\"batchmode\\\": {\\\"input_bams\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"processmode\\\": \\\"individual\\\", \\\"__current_case__\\\": 0}, \\\"ref_file\\\": \\\"hg38\\\", \\\"reference_source_selector\\\": \\\"cached\\\", \\\"__current_case__\\\": 0}\", \"__rerun_remap_job_id__\": null, \"options_type\": \"{\\\"__current_case__\\\": 1, \\\"options_type_selector\\\": \\\"simple\\\"}\", \"target_limit_type\": \"{\\\"target_limit_type_selector\\\": \\\"do_not_limit\\\", \\\"__current_case__\\\": 0}\"}", 
+            "tool_version": "1.1.0-1", 
+            "type": "tool", 
+            "uuid": "35551dc8-53b4-493a-8150-c5d74799980b", 
+            "workflow_outputs": [
+                {
+                    "label": null, 
+                    "output_name": "output_vcf", 
+                    "uuid": "1f469a35-ac35-47c3-8588-f9671f493111"
+                }
+            ]
+        }, 
+        "4": {
+            "annotation": "", 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/custom_pro_db/custom_pro_db/1.16.1.0", 
+            "errors": null, 
+            "id": 4, 
+            "input_connections": {
+                "genome_annotation|bamInput": {
+                    "id": 2, 
+                    "output_name": "output_alignments"
+                }, 
+                "genome_annotation|vcfInput": {
+                    "id": 3, 
+                    "output_name": "output_vcf"
+                }
+            }, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool CustomProDB", 
+                    "name": "genome_annotation"
+                }, 
+                {
+                    "description": "runtime parameter for tool CustomProDB", 
+                    "name": "genome_annotation"
+                }
+            ], 
+            "label": null, 
+            "name": "CustomProDB", 
+            "outputs": [
+                {
+                    "name": "output_rpkm", 
+                    "type": "fasta"
+                }, 
+                {
+                    "name": "output_snv", 
+                    "type": "fasta"
+                }, 
+                {
+                    "name": "output_indel", 
+                    "type": "fasta"
+                }, 
+                {
+                    "name": "output_variant_annotation_rdata", 
+                    "type": "rdata"
+                }, 
+                {
+                    "name": "output_genomic_mapping_sqlite", 
+                    "type": "sqlite"
+                }, 
+                {
+                    "name": "output_variant_annotation_sqlite", 
+                    "type": "sqlite"
+                }
+            ], 
+            "position": {
+                "left": 1106, 
+                "top": 224
+            }, 
+            "post_job_actions": {
+                "HideDatasetActionoutput_genomic_mapping_sqlite": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_genomic_mapping_sqlite"
+                }, 
+                "HideDatasetActionoutput_indel": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_indel"
+                }, 
+                "HideDatasetActionoutput_rpkm": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_rpkm"
+                }, 
+                "HideDatasetActionoutput_snv": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_snv"
+                }, 
+                "HideDatasetActionoutput_variant_annotation_sqlite": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_variant_annotation_sqlite"
+                }, 
+                "RenameDatasetActionoutput_indel": {
+                    "action_arguments": {
+                        "newname": "#{bamInput|basename}.indel-fasta"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output_indel"
+                }, 
+                "RenameDatasetActionoutput_rpkm": {
+                    "action_arguments": {
+                        "newname": "#{bamInput|basename}.rpkm-fasta"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output_rpkm"
+                }, 
+                "RenameDatasetActionoutput_snv": {
+                    "action_arguments": {
+                        "newname": "#{bamInput|basename}.snv-fasta"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output_snv"
+                }, 
+                "RenameDatasetActionoutput_variant_annotation_rdata": {
+                    "action_arguments": {
+                        "newname": "#{bamInput|basename}.variant-RData"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output_variant_annotation_rdata"
+                }
+            }, 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/custom_pro_db/custom_pro_db/1.16.1.0", 
+            "tool_shed_repository": {
+                "changeset_revision": "bc08158abf77", 
+                "name": "custom_pro_db", 
+                "owner": "galaxyp", 
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            }, 
+            "tool_state": "{\"outputIndels\": \"\\\"true\\\"\", \"__page__\": null, \"outputSQLite\": \"\\\"false\\\"\", \"outputRData\": \"\\\"true\\\"\", \"genome_annotation\": \"{\\\"cosmic\\\": \\\"false\\\", \\\"bamInput\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"source\\\": \\\"builtin\\\", \\\"builtin\\\": \\\"hg38_GRCh38.p10\\\", \\\"__current_case__\\\": 0, \\\"vcfInput\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"dbsnpInCoding\\\": \\\"false\\\"}\", \"__rerun_remap_job_id__\": null, \"rpkmCutoff\": \"\\\"0.0\\\"\"}", 
+            "tool_version": "1.16.1.0", 
+            "type": "tool", 
+            "uuid": "42ebe794-4cad-49c3-a929-134bb3374b3e", 
+            "workflow_outputs": [
+                {
+                    "label": null, 
+                    "output_name": "output_variant_annotation_rdata", 
+                    "uuid": "32e80cd7-901e-49c6-9a2e-3961cadc8797"
+                }
+            ]
+        }, 
+        "5": {
+            "annotation": "", 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/fasta_merge_files_and_filter_unique_sequences/fasta_merge_files_and_filter_unique_sequences/1.2.0", 
+            "errors": null, 
+            "id": 5, 
+            "input_connections": {
+                "batchmode|input_fastas_0|input_fasta": {
+                    "id": 4, 
+                    "output_name": "output_rpkm"
+                }, 
+                "batchmode|input_fastas_1|input_fasta": {
+                    "id": 4, 
+                    "output_name": "output_snv"
+                }, 
+                "batchmode|input_fastas_2|input_fasta": {
+                    "id": 4, 
+                    "output_name": "output_indel"
+                }
+            }, 
+            "inputs": [], 
+            "label": null, 
+            "name": "FASTA Merge Files and Filter Unique Sequences", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "fasta"
+                }
+            ], 
+            "position": {
+                "left": 1429.5, 
+                "top": 267.5
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "#{batchmode.input_fastas_0.input_fasta|basename}.fasta"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/fasta_merge_files_and_filter_unique_sequences/fasta_merge_files_and_filter_unique_sequences/1.2.0", 
+            "tool_shed_repository": {
+                "changeset_revision": "650d553c1fda", 
+                "name": "fasta_merge_files_and_filter_unique_sequences", 
+                "owner": "galaxyp", 
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            }, 
+            "tool_state": "{\"batchmode\": \"{\\\"input_fastas\\\": [{\\\"__index__\\\": 0, \\\"input_fasta\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}}, {\\\"__index__\\\": 1, \\\"input_fasta\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}}, {\\\"__index__\\\": 2, \\\"input_fasta\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}}], \\\"processmode\\\": \\\"individual\\\", \\\"__current_case__\\\": 0}\", \"__page__\": null, \"accession_parser\": \"\\\"^>([^ ]+).*$\\\"\", \"uniqueness_criterion\": \"\\\"sequence\\\"\", \"__rerun_remap_job_id__\": null}", 
+            "tool_version": "1.2.0", 
+            "type": "tool", 
+            "uuid": "73752b08-67f7-459e-87ef-9c656f4944a9", 
+            "workflow_outputs": [
+                {
+                    "label": null, 
+                    "output_name": "output", 
+                    "uuid": "9a91c411-eba2-42ef-9bb8-60c2041bbbb5"
+                }
+            ]
+        }
+    }, 
+    "uuid": "5127ea5e-f460-4f46-aa68-16e58a8573e5"
+}

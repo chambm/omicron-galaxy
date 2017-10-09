@@ -1,0 +1,3 @@
+CVMFS_REPOSITORIES="data.galaxyproject.org,omicron-data.duckdns.org"
+CVMFS_HTTP_PROXY="DIRECT"
+CVMFS_QUOTA_LIMIT="4000"

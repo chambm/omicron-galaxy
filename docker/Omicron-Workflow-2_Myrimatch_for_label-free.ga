@@ -2,11 +2,12 @@
     "a_galaxy_workflow": "true", 
     "annotation": "", 
     "format-version": "0.1", 
-    "name": "3b. Myrimatch for label-free", 
+    "name": "2. Myrimatch for label-free", 
     "steps": {
         "0": {
             "annotation": "", 
             "content_id": null, 
+            "errors": null, 
             "id": 0, 
             "input_connections": {}, 
             "inputs": [
@@ -22,7 +23,6 @@
                 "left": 200, 
                 "top": 176.5
             }, 
-            "tool_errors": null, 
             "tool_id": null, 
             "tool_state": "{\"collection_type\": \"list\", \"name\": \"Input Dataset Collection\"}", 
             "tool_version": null, 
@@ -39,6 +39,7 @@
         "1": {
             "annotation": "", 
             "content_id": null, 
+            "errors": null, 
             "id": 1, 
             "input_connections": {}, 
             "inputs": [
@@ -54,7 +55,6 @@
                 "left": 246.5, 
                 "top": 282.5
             }, 
-            "tool_errors": null, 
             "tool_id": null, 
             "tool_state": "{\"name\": \"Input Dataset\"}", 
             "tool_version": null, 
@@ -70,7 +70,8 @@
         }, 
         "2": {
             "annotation": "", 
-            "content_id": "testtoolshed.g2.bx.psu.edu/repos/galaxyp/myrimatch/myrimatch/0.1.0", 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/myrimatch/myrimatch/3.0.10246.0", 
+            "errors": null, 
             "id": 2, 
             "input_connections": {
                 "ProteinDatabase": {
@@ -85,11 +86,11 @@
             "inputs": [
                 {
                     "description": "runtime parameter for tool MyriMatch", 
-                    "name": "input"
+                    "name": "ProteinDatabase"
                 }, 
                 {
                     "description": "runtime parameter for tool MyriMatch", 
-                    "name": "ProteinDatabase"
+                    "name": "input"
                 }
             ], 
             "label": null, 
@@ -111,23 +112,23 @@
                     "output_name": "output"
                 }
             }, 
-            "tool_errors": null, 
-            "tool_id": "testtoolshed.g2.bx.psu.edu/repos/galaxyp/myrimatch/myrimatch/0.1.0", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/myrimatch/myrimatch/3.0.10246.0", 
             "tool_shed_repository": {
-                "changeset_revision": "4bb0872e2b5f", 
+                "changeset_revision": "1881935e5351", 
                 "name": "myrimatch", 
                 "owner": "galaxyp", 
-                "tool_shed": "testtoolshed.g2.bx.psu.edu"
+                "tool_shed": "toolshed.g2.bx.psu.edu"
             }, 
-            "tool_state": "{\"MinTerminiCleavages\": \"\\\"1\\\"\", \"CleavageRules\": \"\\\"Trypsin/P\\\"\", \"OutputFormat\": \"\\\"pepXML\\\"\", \"StaticMods\": \"[]\", \"DynamicMods\": \"[]\", \"__page__\": 0, \"ProteinDatabase\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"__rerun_remap_job_id__\": null, \"DecoyPrefix\": \"\\\"rev_\\\"\", \"common_fixed_modifications\": \"[\\\"C_57.021464\\\"]\", \"MaxDynamicMods\": \"\\\"4\\\"\", \"MaxMissedCleavages\": \"\\\"2\\\"\", \"common_variable_modifications\": \"[\\\"M_*_15.994915\\\", \\\"(Q_*_-17.026549\\\"]\", \"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"tolerance_options\": \"{\\\"FragmentMzTolerance\\\": \\\"0.5\\\", \\\"precursor_tolerance\\\": {\\\"MonoPrecursorMzTolerance\\\": \\\"10.0\\\", \\\"mono_precursor_mz_tolerance_units\\\": \\\"ppm\\\", \\\"PrecursorMzToleranceRule\\\": \\\"mono\\\", \\\"__current_case__\\\": 2}, \\\"fragment_mz_tolerance_units\\\": \\\"daltons\\\"}\", \"advanced\": \"{\\\"MaxPeptideLength\\\": \\\"75\\\", \\\"fragmentation_rule\\\": {\\\"FragmentationAutoRule\\\": \\\"false\\\", \\\"__current_case__\\\": 0}, \\\"MaxResultRank\\\": \\\"2\\\", \\\"UseSmartPlusThreeModel\\\": \\\"true\\\", \\\"MinPeptideLength\\\": \\\"5\\\", \\\"MonoisotopeAdjustmentSet\\\": \\\"[-1,2]\\\", \\\"MaxPeakCount\\\": \\\"\\\", \\\"NumChargeStates\\\": \\\"3\\\"}\"}", 
-            "tool_version": "0.1.0", 
+            "tool_state": "{\"MinTerminiCleavages\": \"\\\"1\\\"\", \"common_fixed_modifications\": \"[\\\"C_57.021464\\\"]\", \"OutputFormat\": \"\\\"pepXML\\\"\", \"StaticMods\": \"[]\", \"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"__page__\": 0, \"__rerun_remap_job_id__\": null, \"tolerance_options\": \"{\\\"FragmentMzTolerance\\\": \\\"0.5\\\", \\\"precursor_tolerance\\\": {\\\"MonoPrecursorMzTolerance\\\": \\\"10.0\\\", \\\"mono_precursor_mz_tolerance_units\\\": \\\"ppm\\\", \\\"PrecursorMzToleranceRule\\\": \\\"mono\\\", \\\"__current_case__\\\": 2}, \\\"fragment_mz_tolerance_units\\\": \\\"daltons\\\"}\", \"DecoyPrefix\": \"\\\"rev_\\\"\", \"CleavageRules\": \"\\\"Trypsin/P\\\"\", \"common_variable_modifications\": \"[\\\"M_*_15.994915\\\", \\\"(Q_*_-17.026549\\\"]\", \"MaxDynamicMods\": \"\\\"4\\\"\", \"advanced\": \"{\\\"MaxPeptideLength\\\": \\\"75\\\", \\\"fragmentation_rule\\\": {\\\"FragmentationAutoRule\\\": \\\"false\\\", \\\"__current_case__\\\": 0}, \\\"MaxResultRank\\\": \\\"2\\\", \\\"UseSmartPlusThreeModel\\\": \\\"true\\\", \\\"MinPeptideLength\\\": \\\"5\\\", \\\"MonoisotopeAdjustmentSet\\\": \\\"[-1,2]\\\", \\\"MaxPeakCount\\\": \\\"\\\", \\\"NumChargeStates\\\": \\\"3\\\"}\", \"DynamicMods\": \"[]\", \"ProteinDatabase\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"MaxMissedCleavages\": \"\\\"2\\\"\"}", 
+            "tool_version": "3.0.10246.0", 
             "type": "tool", 
             "uuid": "64caf1f6-603b-4377-8ccf-14bb8fa1cd2f", 
             "workflow_outputs": []
         }, 
         "3": {
             "annotation": "", 
-            "content_id": "testtoolshed.g2.bx.psu.edu/repos/galaxyp/idpqonvert/idpqonvert/0.1.0", 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/idpqonvert/idpqonvert/3.0.10246.0", 
+            "errors": null, 
             "id": 3, 
             "input_connections": {
                 "ProteinDatabase": {
@@ -168,23 +169,23 @@
                     "output_name": "output"
                 }
             }, 
-            "tool_errors": null, 
-            "tool_id": "testtoolshed.g2.bx.psu.edu/repos/galaxyp/idpqonvert/idpqonvert/0.1.0", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/idpqonvert/idpqonvert/3.0.11392.0", 
             "tool_shed_repository": {
-                "changeset_revision": "d239e445e2e6", 
+                "changeset_revision": "feebe32c3a52", 
                 "name": "idpqonvert", 
                 "owner": "galaxyp", 
-                "tool_shed": "testtoolshed.g2.bx.psu.edu"
+                "tool_shed": "toolshed.g2.bx.psu.edu"
             }, 
             "tool_state": "{\"scoring\": \"{\\\"ms-gf_specevalue\\\": {\\\"ms-gf_specevalue_type\\\": \\\"off\\\", \\\"ms-gf_specevalue_weight\\\": \\\"-1.0\\\"}, \\\"comet_deltacn\\\": {\\\"comet_deltacn_type\\\": \\\"off\\\", \\\"comet_deltacn_weight\\\": \\\"1.0\\\"}, \\\"myrimatch_mvh\\\": {\\\"myrimatch_mvh_weight\\\": \\\"1.0\\\", \\\"myrimatch_mvh_type\\\": \\\"off\\\"}, \\\"extra_score\\\": [], \\\"sequest_xcorr\\\": {\\\"sequest_xcorr_weight\\\": \\\"1.0\\\", \\\"sequest_xcorr_type\\\": \\\"off\\\"}, \\\"xtandem_hyperscore\\\": {\\\"xtandem_hyperscore_type\\\": \\\"off\\\", \\\"xtandem_hyperscore_weight\\\": \\\"1.0\\\"}, \\\"xtandem_expect\\\": {\\\"xtandem_expect_weight\\\": \\\"-1.0\\\", \\\"xtandem_expect_type\\\": \\\"off\\\"}, \\\"comet_expect\\\": {\\\"comet_expect_type\\\": \\\"off\\\", \\\"comet_expect_weight\\\": \\\"-1.0\\\"}, \\\"sequest_deltacn\\\": {\\\"sequest_deltacn_type\\\": \\\"off\\\", \\\"sequest_deltacn_weight\\\": \\\"1.0\\\"}, \\\"comet_xcorr\\\": {\\\"comet_xcorr_weight\\\": \\\"1.0\\\", \\\"comet_xcorr_type\\\": \\\"off\\\"}, \\\"mascot_score\\\": {\\\"mascot_score_type\\\": \\\"off\\\", \\\"mascot_score_weight\\\": \\\"1.0\\\"}, \\\"xcorr\\\": {\\\"xcorr_weight\\\": \\\"1.0\\\", \\\"xcorr_type\\\": \\\"off\\\"}}\", \"__page__\": 0, \"__rerun_remap_job_id__\": null, \"DecoyPrefix\": \"\\\"\\\"\", \"MaxFDR\": \"\\\"0.05\\\"\", \"advanced_options\": \"{\\\"MinPartitionSize\\\": \\\"10\\\", \\\"PolynomialDegree\\\": \\\"3\\\", \\\"Kernel\\\": \\\"Linear\\\", \\\"MassErrorHandling\\\": \\\"Ignore\\\", \\\"MaxResultRank\\\": \\\"1\\\", \\\"RerankMatches\\\": \\\"false\\\", \\\"MaxImportFDR\\\": \\\"0.1\\\", \\\"MaxTrainingRank\\\": \\\"1\\\", \\\"MissedCleavagesHandling\\\": \\\"Ignore\\\", \\\"QonverterMethod\\\": \\\"MonteCarlo\\\", \\\"TruePositiveThreshold\\\": \\\"0.01\\\", \\\"ChargeStateHandling\\\": \\\"Partition\\\", \\\"TerminalSpecificityHandling\\\": \\\"Partition\\\", \\\"Nu\\\": \\\"-0.5\\\", \\\"Gamma\\\": \\\"5.0\\\", \\\"SVMType\\\": \\\"CSVC\\\"}\", \"ProteinDatabase\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}", 
-            "tool_version": "0.1.0", 
+            "tool_version": "3.0.11392.0", 
             "type": "tool", 
             "uuid": "43f6cfe1-feab-4c31-8235-d8dc65d29c58", 
             "workflow_outputs": []
         }, 
         "4": {
             "annotation": "", 
-            "content_id": "testtoolshed.g2.bx.psu.edu/repos/galaxyp/idpassemble/idpassemble/0.1.0", 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/idpassemble/idpassemble/3.0.10246.0", 
+            "errors": null, 
             "id": 4, 
             "input_connections": {
                 "input": {
@@ -211,16 +212,15 @@
                 "top": 317.5
             }, 
             "post_job_actions": {}, 
-            "tool_errors": null, 
-            "tool_id": "testtoolshed.g2.bx.psu.edu/repos/galaxyp/idpassemble/idpassemble/0.1.0", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/idpassemble/idpassemble/3.0.10246.0", 
             "tool_shed_repository": {
-                "changeset_revision": "92d81b01bc76", 
+                "changeset_revision": "ee69ea5752fe", 
                 "name": "idpassemble", 
                 "owner": "galaxyp", 
-                "tool_shed": "testtoolshed.g2.bx.psu.edu"
+                "tool_shed": "toolshed.g2.bx.psu.edu"
             }, 
             "tool_state": "{\"__page__\": 0, \"MaxFDRScore\": \"\\\"0.05\\\"\", \"MinSpectraPerDistinctMatch\": \"\\\"1\\\"\", \"__rerun_remap_job_id__\": null, \"MinSpectraPerDistinctPeptide\": \"\\\"1\\\"\", \"filter_at_gene_level_condition\": \"{\\\"FilterAtGeneLevel\\\": \\\"false\\\", \\\"MinSpectra\\\": \\\"2\\\", \\\"MinAdditionalPeptides\\\": \\\"1\\\", \\\"MinDistinctPeptides\\\": \\\"2\\\", \\\"__current_case__\\\": 1}\", \"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"MaxProteinGroupsPerPeptide\": \"\\\"10\\\"\"}", 
-            "tool_version": "0.1.0", 
+            "tool_version": "3.0.10246.0", 
             "type": "tool", 
             "uuid": "79852f40-a9c1-480b-af8a-61d9a79dbc2b", 
             "workflow_outputs": [

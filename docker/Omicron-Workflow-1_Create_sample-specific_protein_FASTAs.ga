@@ -2,11 +2,12 @@
     "a_galaxy_workflow": "true", 
     "annotation": "", 
     "format-version": "0.1", 
-    "name": "3a. Create sample-specific protein FASTAs", 
+    "name": "1. Create sample-specific protein FASTAs", 
     "steps": {
         "0": {
             "annotation": "", 
             "content_id": null, 
+            "errors": null, 
             "id": 0, 
             "input_connections": {}, 
             "inputs": [
@@ -15,14 +16,13 @@
                     "name": "Input FASTQ"
                 }
             ], 
-            "label": null, 
+            "label": "Input FASTQ", 
             "name": "Input dataset", 
             "outputs": [], 
             "position": {
-                "left": 200, 
-                "top": 187
+                "left": 276, 
+                "top": 211
             }, 
-            "tool_errors": null, 
             "tool_id": null, 
             "tool_state": "{\"name\": \"Input FASTQ\"}", 
             "tool_version": null, 
@@ -39,6 +39,7 @@
         "1": {
             "annotation": "", 
             "content_id": null, 
+            "errors": null, 
             "id": 1, 
             "input_connections": {}, 
             "inputs": [
@@ -47,14 +48,13 @@
                     "name": "Input Gene Annotations"
                 }
             ], 
-            "label": null, 
+            "label": "Input Gene Annotations", 
             "name": "Input dataset", 
             "outputs": [], 
             "position": {
-                "left": 367, 
-                "top": 445
+                "left": 294, 
+                "top": 297
             }, 
-            "tool_errors": null, 
             "tool_id": null, 
             "tool_state": "{\"name\": \"Input Gene Annotations\"}", 
             "tool_version": null, 
@@ -70,72 +70,17 @@
         }, 
         "2": {
             "annotation": "", 
-            "content_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastq_groomer/fastq_groomer/1.0.4", 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/devteam/tophat2/tophat2/0.9", 
+            "errors": null, 
             "id": 2, 
-            "input_connections": {
-                "input_file": {
-                    "id": 0, 
-                    "output_name": "output"
-                }
-            }, 
-            "inputs": [
-                {
-                    "description": "runtime parameter for tool FASTQ Groomer", 
-                    "name": "input_file"
-                }
-            ], 
-            "label": null, 
-            "name": "FASTQ Groomer", 
-            "outputs": [
-                {
-                    "name": "output_file", 
-                    "type": "fastqsanger"
-                }
-            ], 
-            "position": {
-                "left": 274, 
-                "top": 283
-            }, 
-            "post_job_actions": {
-                "HideDatasetActionoutput_file": {
-                    "action_arguments": {}, 
-                    "action_type": "HideDatasetAction", 
-                    "output_name": "output_file"
-                }, 
-                "RenameDatasetActionoutput_file": {
-                    "action_arguments": {
-                        "newname": "#{input_file|basename}.groomed-fastq"
-                    }, 
-                    "action_type": "RenameDatasetAction", 
-                    "output_name": "output_file"
-                }
-            }, 
-            "tool_errors": null, 
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/fastq_groomer/fastq_groomer/1.0.4", 
-            "tool_shed_repository": {
-                "changeset_revision": "e4d28c94242d", 
-                "name": "fastq_groomer", 
-                "owner": "devteam", 
-                "tool_shed": "toolshed.g2.bx.psu.edu"
-            }, 
-            "tool_state": "{\"__page__\": 0, \"input_type\": \"\\\"sanger\\\"\", \"__rerun_remap_job_id__\": null, \"options_type\": \"{\\\"output_type\\\": \\\"sanger\\\", \\\"force_quality_encoding\\\": \\\"ascii\\\", \\\"__current_case__\\\": 1, \\\"options_type_selector\\\": \\\"advanced\\\", \\\"summarize_input\\\": \\\"dont_summarize_input\\\"}\", \"input_file\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}", 
-            "tool_version": "1.0.4", 
-            "type": "tool", 
-            "uuid": "2ad3b48a-8050-45e5-87db-fe141691ae2a", 
-            "workflow_outputs": []
-        }, 
-        "3": {
-            "annotation": "", 
-            "content_id": "toolshed.g2.bx.psu.edu/repos/devteam/tophat2/tophat2/2.1.0", 
-            "id": 3, 
             "input_connections": {
                 "params|own_junctions|gene_model_ann|gene_annotation_model": {
                     "id": 1, 
                     "output_name": "output"
                 }, 
                 "singlePaired|input1": {
-                    "id": 2, 
-                    "output_name": "output_file"
+                    "id": 0, 
+                    "output_name": "output"
                 }
             }, 
             "inputs": [
@@ -177,8 +122,8 @@
                 }
             ], 
             "position": {
-                "left": 584, 
-                "top": 210
+                "left": 539, 
+                "top": 212
             }, 
             "post_job_actions": {
                 "HideDatasetActionaccepted_hits": {
@@ -225,33 +170,68 @@
                 }, 
                 "RenameDatasetActionalign_summary": {
                     "action_arguments": {
-                        "newname": "#{input1|basename}-tophat.log"
+                        "newname": "#{input1|basename}.tophat-log"
                     }, 
                     "action_type": "RenameDatasetAction", 
                     "output_name": "align_summary"
+                }, 
+                "RenameDatasetActiondeletions": {
+                    "action_arguments": {
+                        "newname": "#{input1|basename}.deletions"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "deletions"
+                }, 
+                "RenameDatasetActionfusions": {
+                    "action_arguments": {
+                        "newname": "#{input1|basename}.fusions"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "fusions"
+                }, 
+                "RenameDatasetActioninsertions": {
+                    "action_arguments": {
+                        "newname": "#{input1|basename}.insertions"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "insertions"
+                }, 
+                "RenameDatasetActionjunctions": {
+                    "action_arguments": {
+                        "newname": "#{input1|basename}.junctions"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "junctions"
+                }, 
+                "RenameDatasetActionunmapped": {
+                    "action_arguments": {
+                        "newname": "#{input1|basename}.unmapped"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "unmapped"
                 }
             }, 
-            "tool_errors": null, 
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/tophat2/tophat2/2.1.0", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/tophat2/tophat2/0.9", 
             "tool_shed_repository": {
-                "changeset_revision": "758594ed0364", 
+                "changeset_revision": "4eb3c3beb9c7", 
                 "name": "tophat2", 
                 "owner": "devteam", 
                 "tool_shed": "toolshed.g2.bx.psu.edu"
             }, 
-            "tool_state": "{\"__page__\": 0, \"singlePaired\": \"{\\\"sPaired\\\": \\\"single\\\", \\\"input1\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"__current_case__\\\": 0}\", \"__rerun_remap_job_id__\": null, \"readGroup\": \"{\\\"__current_case__\\\": 1, \\\"specReadGroup\\\": \\\"no\\\"}\", \"params\": \"{\\\"min_intron_length\\\": \\\"70\\\", \\\"min_segment_intron\\\": \\\"50\\\", \\\"fusion_search\\\": {\\\"anchor_len\\\": \\\"20\\\", \\\"ignore_chromosomes\\\": \\\"MT\\\", \\\"min_dist\\\": \\\"100000\\\", \\\"multipairs\\\": \\\"2\\\", \\\"read_mismatches\\\": \\\"2\\\", \\\"__current_case__\\\": 1, \\\"do_search\\\": \\\"Yes\\\", \\\"multireads\\\": \\\"2\\\"}, \\\"seg_mismatches\\\": \\\"2\\\", \\\"library_type\\\": \\\"fr-unstranded\\\", \\\"settingsType\\\": \\\"full\\\", \\\"coverage_search\\\": {\\\"use_search\\\": \\\"auto\\\", \\\"__current_case__\\\": 0}, \\\"splice_mismatches\\\": \\\"0\\\", \\\"max_multihits\\\": \\\"20\\\", \\\"bowtie_n\\\": \\\"No\\\", \\\"read_realign_edit_dist\\\": \\\"1000\\\", \\\"max_intron_length\\\": \\\"500000\\\", \\\"anchor_length\\\": \\\"8\\\", \\\"microexon_search\\\": \\\"No\\\", \\\"indel_search\\\": {\\\"max_insertion_length\\\": \\\"3\\\", \\\"max_deletion_length\\\": \\\"3\\\", \\\"__current_case__\\\": 1, \\\"allow_indel_search\\\": \\\"Yes\\\"}, \\\"read_edit_dist\\\": \\\"2\\\", \\\"output_unmapped\\\": \\\"false\\\", \\\"own_junctions\\\": {\\\"gene_model_ann\\\": {\\\"gene_annotation_model\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"use_annotations\\\": \\\"Yes\\\", \\\"__current_case__\\\": 1}, \\\"no_novel_juncs\\\": \\\"Yes\\\", \\\"__current_case__\\\": 0, \\\"use_junctions\\\": \\\"Yes\\\", \\\"raw_juncs\\\": {\\\"use_juncs\\\": \\\"No\\\", \\\"__current_case__\\\": 0}}, \\\"seg_length\\\": \\\"25\\\", \\\"max_segment_intron\\\": \\\"500000\\\", \\\"bowtie2_settings\\\": {\\\"__current_case__\\\": 0, \\\"b2_settings\\\": \\\"No\\\"}, \\\"__current_case__\\\": 1, \\\"read_mismatches\\\": \\\"2\\\"}\", \"refGenomeSource\": \"{\\\"genomeSource\\\": \\\"indexed\\\", \\\"index\\\": \\\"hg19\\\", \\\"__current_case__\\\": 0}\"}", 
-            "tool_version": "2.1.0", 
+            "tool_state": "{\"__page__\": null, \"singlePaired\": \"{\\\"sPaired\\\": \\\"single\\\", \\\"input1\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"__current_case__\\\": 0}\", \"__rerun_remap_job_id__\": null, \"readGroup\": \"{\\\"__current_case__\\\": 1, \\\"specReadGroup\\\": \\\"no\\\"}\", \"params\": \"{\\\"min_intron_length\\\": \\\"70\\\", \\\"min_segment_intron\\\": \\\"50\\\", \\\"fusion_search\\\": {\\\"anchor_len\\\": \\\"20\\\", \\\"ignore_chromosomes\\\": \\\"MT\\\", \\\"min_dist\\\": \\\"100000\\\", \\\"multipairs\\\": \\\"2\\\", \\\"read_mismatches\\\": \\\"2\\\", \\\"__current_case__\\\": 1, \\\"do_search\\\": \\\"Yes\\\", \\\"multireads\\\": \\\"2\\\"}, \\\"seg_mismatches\\\": \\\"2\\\", \\\"library_type\\\": \\\"fr-unstranded\\\", \\\"settingsType\\\": \\\"full\\\", \\\"coverage_search\\\": {\\\"use_search\\\": \\\"Yes\\\", \\\"max_coverage_intron\\\": \\\"20000\\\", \\\"__current_case__\\\": 0, \\\"min_coverage_intron\\\": \\\"50\\\"}, \\\"splice_mismatches\\\": \\\"0\\\", \\\"max_multihits\\\": \\\"20\\\", \\\"bowtie_n\\\": \\\"No\\\", \\\"read_realign_edit_dist\\\": \\\"1000\\\", \\\"max_intron_length\\\": \\\"500000\\\", \\\"anchor_length\\\": \\\"8\\\", \\\"microexon_search\\\": \\\"No\\\", \\\"indel_search\\\": {\\\"max_insertion_length\\\": \\\"3\\\", \\\"max_deletion_length\\\": \\\"3\\\", \\\"__current_case__\\\": 1, \\\"allow_indel_search\\\": \\\"Yes\\\"}, \\\"read_edit_dist\\\": \\\"2\\\", \\\"output_unmapped\\\": \\\"false\\\", \\\"own_junctions\\\": {\\\"gene_model_ann\\\": {\\\"gene_annotation_model\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"use_annotations\\\": \\\"Yes\\\", \\\"__current_case__\\\": 1}, \\\"no_novel_juncs\\\": \\\"Yes\\\", \\\"__current_case__\\\": 0, \\\"use_junctions\\\": \\\"Yes\\\", \\\"raw_juncs\\\": {\\\"use_juncs\\\": \\\"No\\\", \\\"__current_case__\\\": 0}}, \\\"seg_length\\\": \\\"25\\\", \\\"max_segment_intron\\\": \\\"500000\\\", \\\"bowtie2_settings\\\": {\\\"__current_case__\\\": 0, \\\"b2_settings\\\": \\\"No\\\"}, \\\"__current_case__\\\": 1, \\\"read_mismatches\\\": \\\"2\\\"}\", \"refGenomeSource\": \"{\\\"genomeSource\\\": \\\"indexed\\\", \\\"index\\\": \\\"hg19\\\", \\\"__current_case__\\\": 0}\"}", 
+            "tool_version": "0.9", 
             "type": "tool", 
             "uuid": "ea1d473b-fd08-4f64-8111-e2c4478bafdf", 
             "workflow_outputs": []
         }, 
-        "4": {
+        "3": {
             "annotation": "", 
             "content_id": "toolshed.g2.bx.psu.edu/repos/devteam/samtools_mpileup/samtools_mpileup/2.1.1", 
-            "id": 4, 
+            "errors": null, 
+            "id": 3, 
             "input_connections": {
                 "reference_source|input_bam": {
-                    "id": 3, 
+                    "id": 2, 
                     "output_name": "accepted_hits"
                 }
             }, 
@@ -303,7 +283,6 @@
                     "output_name": "output_mpileup"
                 }
             }, 
-            "tool_errors": null, 
             "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/samtools_mpileup/samtools_mpileup/2.1.1", 
             "tool_shed_repository": {
                 "changeset_revision": "bfc4517aa037", 
@@ -311,19 +290,20 @@
                 "owner": "devteam", 
                 "tool_shed": "toolshed.g2.bx.psu.edu"
             }, 
-            "tool_state": "{\"__page__\": 0, \"advanced_options\": \"{\\\"max_reads_per_bam\\\": \\\"250\\\", \\\"advanced_options_selector\\\": \\\"advanced\\\", \\\"extended_BAQ_computation\\\": \\\"false\\\", \\\"region_string\\\": \\\"\\\", \\\"limit_by_region\\\": {\\\"limit_by_regions\\\": \\\"no_limit\\\", \\\"__current_case__\\\": 2}, \\\"disable_probabilistic_realignment\\\": \\\"false\\\", \\\"skip_anomalous_read_pairs\\\": \\\"false\\\", \\\"minimum_mapping_quality\\\": \\\"20\\\", \\\"filter_by_flags\\\": {\\\"__current_case__\\\": 1, \\\"filter_flags\\\": \\\"nofilter\\\"}, \\\"__current_case__\\\": 0, \\\"coefficient_for_downgrading\\\": \\\"0\\\", \\\"minimum_base_quality\\\": \\\"20\\\", \\\"ignore_overlaps\\\": \\\"false\\\", \\\"exclude_read_group\\\": {\\\"__current_case__\\\": 2, \\\"exclude_read_groups\\\": \\\"no_limit\\\"}}\", \"__rerun_remap_job_id__\": null, \"genotype_likelihood_computation_type\": \"{\\\"genotype_likelihood_computation_type_selector\\\": \\\"perform_genotype_likelihood_computation\\\", \\\"output_format\\\": \\\"--VCF\\\", \\\"perform_indel_calling\\\": {\\\"minimum_gapped_reads_for_indel_candidates\\\": \\\"3\\\", \\\"platform_list_repeat\\\": [], \\\"gapped_read_per_sample\\\": \\\"false\\\", \\\"gap_open_sequencing_error_probability\\\": \\\"40\\\", \\\"skip_indel_calling_above_sample_depth\\\": \\\"250\\\", \\\"gap_extension_sequencing_error_probability\\\": \\\"20\\\", \\\"__current_case__\\\": 1, \\\"perform_indel_calling_selector\\\": \\\"perform_indel_calling\\\", \\\"minimum_gapped_read_fraction\\\": \\\"0.002\\\", \\\"open_seq_error_probability\\\": \\\"40\\\", \\\"coefficient_for_modeling_homopolymer_errors\\\": \\\"100\\\"}, \\\"compressed\\\": \\\"true\\\", \\\"__current_case__\\\": 0, \\\"output_tags\\\": [\\\"DP\\\"]}\", \"reference_source\": \"{\\\"ref_file\\\": \\\"hg19\\\", \\\"reference_source_selector\\\": \\\"cached\\\", \\\"input_bam\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"__current_case__\\\": 0}\"}", 
+            "tool_state": "{\"__page__\": 0, \"reference_source\": \"{\\\"ref_file\\\": \\\"hg19\\\", \\\"reference_source_selector\\\": \\\"cached\\\", \\\"input_bam\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"__current_case__\\\": 0}\", \"__rerun_remap_job_id__\": null, \"genotype_likelihood_computation_type\": \"{\\\"genotype_likelihood_computation_type_selector\\\": \\\"perform_genotype_likelihood_computation\\\", \\\"output_format\\\": \\\"--VCF\\\", \\\"perform_indel_calling\\\": {\\\"minimum_gapped_reads_for_indel_candidates\\\": \\\"3\\\", \\\"platform_list_repeat\\\": [], \\\"gapped_read_per_sample\\\": \\\"false\\\", \\\"gap_open_sequencing_error_probability\\\": \\\"40\\\", \\\"skip_indel_calling_above_sample_depth\\\": \\\"250\\\", \\\"gap_extension_sequencing_error_probability\\\": \\\"20\\\", \\\"__current_case__\\\": 1, \\\"perform_indel_calling_selector\\\": \\\"perform_indel_calling\\\", \\\"minimum_gapped_read_fraction\\\": \\\"0.002\\\", \\\"open_seq_error_probability\\\": \\\"40\\\", \\\"coefficient_for_modeling_homopolymer_errors\\\": \\\"100\\\"}, \\\"compressed\\\": \\\"true\\\", \\\"__current_case__\\\": 0, \\\"output_tags\\\": [\\\"DP\\\"]}\", \"advanced_options\": \"{\\\"max_reads_per_bam\\\": \\\"250\\\", \\\"advanced_options_selector\\\": \\\"advanced\\\", \\\"extended_BAQ_computation\\\": \\\"false\\\", \\\"region_string\\\": \\\"\\\", \\\"limit_by_region\\\": {\\\"limit_by_regions\\\": \\\"no_limit\\\", \\\"__current_case__\\\": 2}, \\\"disable_probabilistic_realignment\\\": \\\"false\\\", \\\"skip_anomalous_read_pairs\\\": \\\"false\\\", \\\"minimum_mapping_quality\\\": \\\"20\\\", \\\"filter_by_flags\\\": {\\\"__current_case__\\\": 1, \\\"filter_flags\\\": \\\"nofilter\\\"}, \\\"__current_case__\\\": 0, \\\"coefficient_for_downgrading\\\": \\\"0\\\", \\\"minimum_base_quality\\\": \\\"20\\\", \\\"ignore_overlaps\\\": \\\"false\\\", \\\"exclude_read_group\\\": {\\\"__current_case__\\\": 2, \\\"exclude_read_groups\\\": \\\"no_limit\\\"}}\"}", 
             "tool_version": "2.1.1", 
             "type": "tool", 
             "uuid": "105f26e2-a9d9-4207-a4ac-aee7809a028b", 
             "workflow_outputs": []
         }, 
-        "5": {
+        "4": {
             "annotation": "", 
             "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/bcftools/bcftools_view/0.1.19.0", 
-            "id": 5, 
+            "errors": null, 
+            "id": 4, 
             "input_connections": {
                 "input": {
-                    "id": 4, 
+                    "id": 3, 
                     "output_name": "output_mpileup"
                 }
             }, 
@@ -363,7 +343,6 @@
                     "output_name": "output"
                 }
             }, 
-            "tool_errors": null, 
             "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/bcftools/bcftools_view/0.1.19.0", 
             "tool_shed_repository": {
                 "changeset_revision": "e5e78d1e09a6", 
@@ -371,19 +350,20 @@
                 "owner": "iuc", 
                 "tool_shed": "toolshed.g2.bx.psu.edu"
             }, 
-            "tool_state": "{\"A\": \"\\\"false\\\"\", \"__page__\": 0, \"e\": \"\\\"true\\\"\", \"G\": \"\\\"false\\\"\", \"g\": \"\\\"true\\\"\", \"seq_dict\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"snpcalling\": \"\\\"true\\\"\", \"output_format\": \"\\\"vcf\\\"\", \"varsitesonly\": \"\\\"true\\\"\", \"S\": \"\\\"true\\\"\", \"N\": \"\\\"false\\\"\", \"rate\": \"\\\"0.001\\\"\", \"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"__rerun_remap_job_id__\": null, \"ratio\": \"\\\"0.15\\\"\"}", 
+            "tool_state": "{\"A\": \"\\\"false\\\"\", \"__page__\": 0, \"e\": \"\\\"true\\\"\", \"g\": \"\\\"true\\\"\", \"G\": \"\\\"false\\\"\", \"seq_dict\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"snpcalling\": \"\\\"true\\\"\", \"output_format\": \"\\\"vcf\\\"\", \"varsitesonly\": \"\\\"true\\\"\", \"rate\": \"\\\"0.001\\\"\", \"N\": \"\\\"false\\\"\", \"S\": \"\\\"true\\\"\", \"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"__rerun_remap_job_id__\": null, \"ratio\": \"\\\"0.15\\\"\"}", 
             "tool_version": "0.1.19.0", 
             "type": "tool", 
             "uuid": "44f66eaf-2da7-4500-b571-c30ceb867317", 
             "workflow_outputs": []
         }, 
-        "6": {
+        "5": {
             "annotation": "", 
-            "content_id": "toolshed.g2.bx.psu.edu/repos/devteam/vcffilter/vcffilter2/0.0.3", 
-            "id": 6, 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/devteam/vcffilter/vcffilter2/1.0.0_rc1.0", 
+            "errors": null, 
+            "id": 5, 
             "input_connections": {
                 "input1": {
-                    "id": 5, 
+                    "id": 4, 
                     "output_name": "output"
                 }
             }, 
@@ -414,16 +394,15 @@
                     "output_name": "out_file1"
                 }
             }, 
-            "tool_errors": null, 
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/vcffilter/vcffilter2/0.0.3", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/vcffilter/vcffilter2/1.0.0_rc1.0", 
             "tool_shed_repository": {
-                "changeset_revision": "e729e584cd6f", 
+                "changeset_revision": "952059348a30", 
                 "name": "vcffilter", 
                 "owner": "devteam", 
                 "tool_shed": "toolshed.g2.bx.psu.edu"
             }, 
             "tool_state": "{\"filterList\": \"\\\"-f \\\\\\\"DP > 2\\\\\\\"\\\"\", \"__page__\": 0, \"__rerun_remap_job_id__\": null, \"input1\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}", 
-            "tool_version": "0.0.3", 
+            "tool_version": "1.0.0_rc1.0", 
             "type": "tool", 
             "uuid": "5227e33b-6404-4e6a-a37d-8b59f4307d8d", 
             "workflow_outputs": [
@@ -434,17 +413,18 @@
                 }
             ]
         }, 
-        "7": {
+        "6": {
             "annotation": "", 
-            "content_id": "testtoolshed.g2.bx.psu.edu/repos/galaxyp/custom_pro_db/custom_pro_db/1.10.0", 
-            "id": 7, 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/custom_pro_db/custom_pro_db/1.16.1.0", 
+            "errors": null, 
+            "id": 6, 
             "input_connections": {
                 "genome_annotation|bamInput": {
-                    "id": 3, 
+                    "id": 2, 
                     "output_name": "accepted_hits"
                 }, 
                 "genome_annotation|vcfInput": {
-                    "id": 6, 
+                    "id": 5, 
                     "output_name": "out_file1"
                 }
             }, 
@@ -472,6 +452,18 @@
                 {
                     "name": "output_indel", 
                     "type": "fasta"
+                }, 
+                {
+                    "name": "output_variant_annotation_rdata", 
+                    "type": "rdata"
+                }, 
+                {
+                    "name": "output_genomic_mapping_sqlite", 
+                    "type": "sqlite"
+                }, 
+                {
+                    "name": "output_variant_annotation_sqlite", 
+                    "type": "sqlite"
                 }
             ], 
             "position": {
@@ -479,6 +471,11 @@
                 "top": 416
             }, 
             "post_job_actions": {
+                "HideDatasetActionoutput_genomic_mapping_sqlite": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_genomic_mapping_sqlite"
+                }, 
                 "HideDatasetActionoutput_indel": {
                     "action_arguments": {}, 
                     "action_type": "HideDatasetAction", 
@@ -493,6 +490,16 @@
                     "action_arguments": {}, 
                     "action_type": "HideDatasetAction", 
                     "output_name": "output_snv"
+                }, 
+                "HideDatasetActionoutput_variant_annotation_rdata": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_variant_annotation_rdata"
+                }, 
+                "HideDatasetActionoutput_variant_annotation_sqlite": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output_variant_annotation_sqlite"
                 }, 
                 "RenameDatasetActionoutput_indel": {
                     "action_arguments": {
@@ -514,48 +521,48 @@
                     }, 
                     "action_type": "RenameDatasetAction", 
                     "output_name": "output_snv"
+                }, 
+                "RenameDatasetActionoutput_variant_annotation_rdata": {
+                    "action_arguments": {
+                        "newname": "#{bamInput|basename}.variant-RData"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output_variant_annotation_rdata"
                 }
             }, 
-            "tool_errors": null, 
-            "tool_id": "testtoolshed.g2.bx.psu.edu/repos/galaxyp/custom_pro_db/custom_pro_db/1.10.0", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/custom_pro_db/custom_pro_db/1.16.1.0", 
             "tool_shed_repository": {
-                "changeset_revision": "ed65d110c1b5", 
+                "changeset_revision": "bc08158abf77", 
                 "name": "custom_pro_db", 
                 "owner": "galaxyp", 
-                "tool_shed": "testtoolshed.g2.bx.psu.edu"
+                "tool_shed": "toolshed.g2.bx.psu.edu"
             }, 
-            "tool_state": "{\"genome_annotation\": \"{\\\"cosmic\\\": \\\"true\\\", \\\"bamInput\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"source\\\": \\\"builtin\\\", \\\"builtin\\\": \\\"hg19\\\", \\\"__current_case__\\\": 0, \\\"vcfInput\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"dbsnpInCoding\\\": \\\"true\\\"}\", \"__page__\": 0, \"__rerun_remap_job_id__\": null, \"rpkmCutoff\": \"\\\"0.0\\\"\"}", 
-            "tool_version": "1.10.0", 
+            "tool_state": "{\"outputIndels\": \"\\\"true\\\"\", \"__page__\": null, \"outputSQLite\": \"\\\"false\\\"\", \"outputRData\": \"\\\"false\\\"\", \"genome_annotation\": \"{\\\"cosmic\\\": \\\"false\\\", \\\"bamInput\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"source\\\": \\\"builtin\\\", \\\"builtin\\\": \\\"GRCh37.p13\\\", \\\"__current_case__\\\": 0, \\\"vcfInput\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"dbsnpInCoding\\\": \\\"false\\\"}\", \"__rerun_remap_job_id__\": null, \"rpkmCutoff\": \"\\\"0.0\\\"\"}", 
+            "tool_version": "1.16.1.0", 
             "type": "tool", 
             "uuid": "42ebe794-4cad-49c3-a929-134bb3374b3e", 
             "workflow_outputs": []
         }, 
-        "8": {
+        "7": {
             "annotation": "", 
-            "content_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/fasta_merge_files_and_filter_unique_sequences/fasta_merge_files_and_filter_unique_sequences/1.0", 
-            "id": 8, 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/fasta_merge_files_and_filter_unique_sequences/fasta_merge_files_and_filter_unique_sequences/1.2.0", 
+            "errors": null, 
+            "id": 7, 
             "input_connections": {
-                "input_files": [
-                    {
-                        "id": 7, 
-                        "output_name": "output_rpkm"
-                    }, 
-                    {
-                        "id": 7, 
-                        "output_name": "output_snv"
-                    }, 
-                    {
-                        "id": 7, 
-                        "output_name": "output_indel"
-                    }
-                ]
-            }, 
-            "inputs": [
-                {
-                    "description": "runtime parameter for tool FASTA Merge Files and Filter Unique Sequences", 
-                    "name": "input_files"
+                "batchmode|input_fastas_0|input_fasta": {
+                    "id": 6, 
+                    "output_name": "output_rpkm"
+                }, 
+                "batchmode|input_fastas_1|input_fasta": {
+                    "id": 6, 
+                    "output_name": "output_snv"
+                }, 
+                "batchmode|input_fastas_2|input_fasta": {
+                    "id": 6, 
+                    "output_name": "output_indel"
                 }
-            ], 
+            }, 
+            "inputs": [], 
             "label": null, 
             "name": "FASTA Merge Files and Filter Unique Sequences", 
             "outputs": [
@@ -565,28 +572,27 @@
                 }
             ], 
             "position": {
-                "left": 1368.5, 
-                "top": 479.5
+                "left": 1469.5, 
+                "top": 454.5
             }, 
             "post_job_actions": {
                 "RenameDatasetActionoutput": {
                     "action_arguments": {
-                        "newname": "#{input_files|basename}.fasta"
+                        "newname": "#{batchmode.input_fastas_0.input_fasta|basename}.fasta"
                     }, 
                     "action_type": "RenameDatasetAction", 
                     "output_name": "output"
                 }
             }, 
-            "tool_errors": null, 
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/fasta_merge_files_and_filter_unique_sequences/fasta_merge_files_and_filter_unique_sequences/1.0", 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/fasta_merge_files_and_filter_unique_sequences/fasta_merge_files_and_filter_unique_sequences/1.2.0", 
             "tool_shed_repository": {
-                "changeset_revision": "2904d46167da", 
+                "changeset_revision": "650d553c1fda", 
                 "name": "fasta_merge_files_and_filter_unique_sequences", 
                 "owner": "galaxyp", 
                 "tool_shed": "toolshed.g2.bx.psu.edu"
             }, 
-            "tool_state": "{\"__page__\": 0, \"__rerun_remap_job_id__\": null, \"input_files\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}", 
-            "tool_version": "1.0", 
+            "tool_state": "{\"batchmode\": \"{\\\"input_fastas\\\": [{\\\"__index__\\\": 0, \\\"input_fasta\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}}, {\\\"__index__\\\": 1, \\\"input_fasta\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}}, {\\\"__index__\\\": 2, \\\"input_fasta\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}}], \\\"processmode\\\": \\\"individual\\\", \\\"__current_case__\\\": 0}\", \"__page__\": null, \"accession_parser\": \"\\\"^>([^ ]+).*$\\\"\", \"uniqueness_criterion\": \"\\\"sequence\\\"\", \"__rerun_remap_job_id__\": null}", 
+            "tool_version": "1.2.0", 
             "type": "tool", 
             "uuid": "73752b08-67f7-459e-87ef-9c656f4944a9", 
             "workflow_outputs": [
@@ -598,5 +604,5 @@
             ]
         }
     }, 
-    "uuid": "210ded5e-4ad5-4920-a477-caca7e4d4a48"
+    "uuid": "eff68dfa-810e-4951-b84e-eae2e1c6918d"
 }
