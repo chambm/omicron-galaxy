@@ -24,7 +24,7 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
     -e "NONUSE=reports,slurmd,slurmctld,condor" \
     -e GALAXY_CONFIG_FTP_UPLOAD_SITE=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) \
     -e GALAXY_CONFIG_CLEANUP_JOB=onsuccess \
-    chambm/omicron-cfncluster:release_17.05
+    chambm/omicron-cfncluster:release_17.09
 
   while
     echo "Waiting for Galaxy to start"
@@ -62,7 +62,7 @@ if [ "$cfn_node_type" == "ComputeFleet" ]; then
   ln -s /export/shed_tools /shed_tools
 
   mkdir /galaxy_venv
-  wget https://raw.githubusercontent.com/chambm/omicron-galaxy/update_17.05/cfncluster/requirements.txt -O /galaxy_venv/requirements.txt
+  wget https://raw.githubusercontent.com/chambm/omicron-galaxy/update_17.09/cfncluster/requirements.txt -O /galaxy_venv/requirements.txt
   chown -R $(id -u slurm):$(id -g slurm) /galaxy_venv
   virtualenv /galaxy_venv
   . /galaxy_venv/bin/activate
