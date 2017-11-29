@@ -99,7 +99,8 @@ EOF
   cp /export/omicron-data.duckdns.org.conf /etc/cvmfs/config.d
   cp /export/default.local /etc/cvmfs
 
-  # Use NFS version 4 instead of 3
+  # Use NFS version 4 instead of 3 and turn relatime on for root drive
+  sed -i.bak "s/defaults,noatime/defaults/" /etc/fstab
   sed -i.bak "s/\(vers=3\)/vers=4/" /etc/fstab
   sed -i.bak "s/\(export.*_netdev\)/\1,fsc/" /etc/fstab
 
