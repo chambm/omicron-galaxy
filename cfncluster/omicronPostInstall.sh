@@ -110,6 +110,8 @@ EOF
   service cachefilesd start
   umount /export
   mount -a
+  mount -o remount,relatime /
+
 fi
 
 true
