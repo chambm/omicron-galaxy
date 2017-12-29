@@ -280,7 +280,7 @@ Parameters:
   ComputeInstanceType:
     Description: ComputeFleet EC2 instance type
     Type: String
-    Default: m4.large
+    Default: m4.xlarge
     ConstraintDescription: 'Must be a valid EC2 instance type, with support for HVM.'
     AllowedValues:
       - cc2.8xlarge
