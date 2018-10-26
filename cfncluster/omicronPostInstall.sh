@@ -102,12 +102,12 @@ EOF
   # Use NFS version 4 instead of 3 and turn relatime on for root drive
   sed -i.bak "s/defaults,noatime/defaults/" /etc/fstab
   sed -i.bak "s/\(vers=3\)/vers=4/" /etc/fstab
-  sed -i.bak "s/\(export.*_netdev\)/\1,fsc/" /etc/fstab
+  #sed -i.bak "s/\(export.*_netdev\)/\1,fsc/" /etc/fstab
 
   # Install cachefilesd and enable FS-Cache for shared NFS mount
-  yum install -y cachefilesd
-  chkconfig cachefilesd on
-  service cachefilesd start
+  #yum install -y cachefilesd
+  #chkconfig cachefilesd on
+  #service cachefilesd start
   umount /export
   mount -a
   mount -o remount,relatime /
