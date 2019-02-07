@@ -8,7 +8,8 @@ else
     # start Galaxy
     export PORT=8080
     service postgresql start
-    install_log='galaxy_install.log'
+    GALAXY_PID=galaxy_install.pid
+    GALAXY_LOG=galaxy_install.log
     
     # wait for database to finish starting up
     STATUS=$(psql 2>&1)
@@ -20,11 +21,11 @@ else
     done
     
     echo "starting Galaxy"
-    sudo -E -u galaxy ./run.sh --daemon --log-file=$install_log --pid-file=galaxy_install.pid
+    sudo -E -u galaxy ./run.sh --daemon 
 
     end=$((SECONDS+60))
     while : ; do
-        tail -n 2 $install_log | grep -E -q "Removing PID file galaxy_install.pid|Daemon is already running"
+        tail -n 2 $GALAXY_LOG | grep -E -q "Removing PID file galaxy_install.pid|Daemon is already running"
         if [ $? -eq 0 ] || [ $SECONDS -ge $end ] ; then
             echo "Galaxy could not be started."
             echo "More information about this failure may be found in the following log snippet from galaxy_install.log:"
@@ -34,7 +35,7 @@ else
             echo $1
             exit 1
         fi
-        tail -n 2 $install_log | grep -q "Starting server in PID"
+        tail -n 2 $GALAXY_LOG | grep -q "Starting server in PID"
         if [ $? -eq 0 ] ; then
             echo "Galaxy is running."
             break

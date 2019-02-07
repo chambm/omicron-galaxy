@@ -24,7 +24,7 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
     -e "NONUSE=reports,slurmd,slurmctld,condor" \
     -e GALAXY_CONFIG_FTP_UPLOAD_SITE=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) \
     -e GALAXY_CONFIG_CLEANUP_JOB=onsuccess \
-    chambm/omicron-cfncluster:release_17.09
+    chambm/omicron-cfncluster:release_18.09
 
   while
     echo "Waiting for Galaxy to start"
@@ -62,14 +62,18 @@ if [ "$cfn_node_type" == "ComputeFleet" ]; then
   ln -s /export/shed_tools /shed_tools
 
   mkdir /galaxy_venv
-  wget https://raw.githubusercontent.com/chambm/omicron-galaxy/update_17.09/cfncluster/requirements.txt -O /galaxy_venv/requirements.txt
-  chown -R $(id -u slurm):$(id -g slurm) /galaxy_venv
-  virtualenv /galaxy_venv
-  . /galaxy_venv/bin/activate
-  pip install --upgrade pip
-  pip install galaxy-lib
-  pip install -r /galaxy_venv/requirements.txt --index-url https://wheels.galaxyproject.org/simple
+  wget https://raw.githubusercontent.com/chambm/omicron-galaxy/update_18.09/cfncluster/requirements.txt -O /galaxy_venv/requirements.txt && \
+  chown -R $(id -u slurm):$(id -g slurm) /galaxy_venv && \
+  virtualenv /galaxy_venv && \
+  . /galaxy_venv/bin/activate && \
+  pip install --upgrade pip && \
+  pip install galaxy-lib && \
+  pip install -r /galaxy_venv/requirements.txt --index-url https://wheels.galaxyproject.org/simple && \
   deactivate
+
+  yum install -y docker
+  service docker start
+  echo "galaxy  ALL = (root) NOPASSWD: SETENV: /usr/bin/docker" >> /etc/sudoers
 
   # Download galaxy-extras role for CVMFS task
   pip install ansible

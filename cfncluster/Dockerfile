@@ -2,7 +2,7 @@
 #
 # VERSION       Galaxy-central
 
-FROM chambm/omicron-galaxy:release_17.09
+FROM chambm/omicron-galaxy:release_18.09
 
 MAINTAINER Matt Chambers, matt.chambers@vanderbilt.edu
 

@@ -1,0 +1,511 @@
+{
+    "a_galaxy_workflow": "true", 
+    "annotation": "To change quantitation type, edit the MS-GF+ modifications, the idpEmbedder QuantitationMethod, and the idpQuery column.", 
+    "format-version": "0.1", 
+    "name": "Proteomic database search (TMT10, HCD, MS-GF+)", 
+    "steps": {
+        "0": {
+            "annotation": "", 
+            "content_id": null, 
+            "errors": null, 
+            "id": 0, 
+            "input_connections": {}, 
+            "inputs": [], 
+            "label": "Input MS/MS spectra", 
+            "name": "Input dataset collection", 
+            "outputs": [], 
+            "position": {
+                "left": 200, 
+                "top": 185.5
+            }, 
+            "tool_id": null, 
+            "tool_state": "{\"collection_type\": \"list\"}", 
+            "tool_version": null, 
+            "type": "data_collection_input", 
+            "uuid": "886e5ed8-bc68-4ebf-acbc-d6502b4d8246", 
+            "workflow_outputs": [
+                {
+                    "label": null, 
+                    "output_name": "output", 
+                    "uuid": "3be40280-934b-4edb-8aa5-18a96695504b"
+                }
+            ]
+        }, 
+        "1": {
+            "annotation": "", 
+            "content_id": null, 
+            "errors": null, 
+            "id": 1, 
+            "input_connections": {}, 
+            "inputs": [], 
+            "label": "Input protein FASTA", 
+            "name": "Input dataset", 
+            "outputs": [], 
+            "position": {
+                "left": 223.5, 
+                "top": 279.5
+            }, 
+            "tool_id": null, 
+            "tool_state": "{}", 
+            "tool_version": null, 
+            "type": "data_input", 
+            "uuid": "bf30cd70-8b57-40dd-b2a0-79ae4e8895d0", 
+            "workflow_outputs": [
+                {
+                    "label": null, 
+                    "output_name": "output", 
+                    "uuid": "912630c5-3033-4ad6-8a87-065b80a98707"
+                }
+            ]
+        }, 
+        "2": {
+            "annotation": "", 
+            "content_id": null, 
+            "errors": null, 
+            "id": 2, 
+            "input_connections": {}, 
+            "inputs": [], 
+            "label": "Source Group Hierarchy", 
+            "name": "Input dataset", 
+            "outputs": [], 
+            "position": {
+                "left": 762, 
+                "top": 521
+            }, 
+            "tool_id": null, 
+            "tool_state": "{}", 
+            "tool_version": null, 
+            "type": "data_input", 
+            "uuid": "64d4bfc6-19ac-4db0-9385-98c97a1b20d6", 
+            "workflow_outputs": [
+                {
+                    "label": null, 
+                    "output_name": "output", 
+                    "uuid": "d4928002-0fa2-4a30-8622-6460ed214844"
+                }
+            ]
+        }, 
+        "3": {
+            "annotation": "", 
+            "content_id": null, 
+            "errors": null, 
+            "id": 3, 
+            "input_connections": {}, 
+            "inputs": [], 
+            "label": "Isobaric Sample Mapping", 
+            "name": "Input dataset", 
+            "outputs": [], 
+            "position": {
+                "left": 760, 
+                "top": 633
+            }, 
+            "tool_id": null, 
+            "tool_state": "{}", 
+            "tool_version": null, 
+            "type": "data_input", 
+            "uuid": "8a93305e-b85a-4e88-9c24-0e8f637d59a1", 
+            "workflow_outputs": [
+                {
+                    "label": null, 
+                    "output_name": "output", 
+                    "uuid": "44c8faa1-9027-4d49-9550-f972d5358b8e"
+                }
+            ]
+        }, 
+        "4": {
+            "annotation": "", 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/msgfplus/msgfplus/0.2", 
+            "errors": null, 
+            "id": 4, 
+            "input_connections": {
+                "msgf_input|d": {
+                    "id": 1, 
+                    "output_name": "output"
+                }, 
+                "msgf_input|s": {
+                    "id": 0, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool MS-GF+", 
+                    "name": "msgf_input"
+                }, 
+                {
+                    "description": "runtime parameter for tool MS-GF+", 
+                    "name": "msgf_input"
+                }
+            ], 
+            "label": null, 
+            "name": "MS-GF+", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "mzid"
+                }, 
+                {
+                    "name": "tsvoutput", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 533, 
+                "top": 180.5
+            }, 
+            "post_job_actions": {
+                "HideDatasetActionoutput": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output"
+                }, 
+                "HideDatasetActiontsvoutput": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "tsvoutput"
+                }, 
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "#{s|basename}.mzid"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }, 
+                "TagDatasetActionoutput": {
+                    "action_arguments": {
+                        "tags": "#MSGF"
+                    }, 
+                    "action_type": "TagDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/msgfplus/msgfplus/0.2", 
+            "tool_shed_repository": {
+                "changeset_revision": "58f9cf0de6d4", 
+                "name": "msgfplus", 
+                "owner": "galaxyp", 
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            }, 
+            "tool_state": "{\"__page__\": null, \"e\": \"\\\"1\\\"\", \"tda\": \"\\\"true\\\"\", \"tsvcheck\": \"\\\"false\\\"\", \"ntt\": \"\\\"1\\\"\", \"common_fixed_modifications\": \"[\\\"C2H3N1O1_C_fix_any_Carbamidomethyl\\\", \\\"229.162932_*_fix_N-term_TMT6plex\\\", \\\"229.162932_K_fix_any_TMT6plex\\\"]\", \"inst\": \"\\\"3\\\"\", \"t\": \"\\\"10.0\\\"\", \"precursor_ion_tol_units\": \"\\\"ppm\\\"\", \"custom_mods\": \"[]\", \"common_variable_modifications\": \"[\\\"O1_M_opt_any_Oxidation\\\", \\\"H-3N-1_Q_opt_N-term_Gln->pyro-Glu\\\"]\", \"msgf_input\": \"{\\\"intype_selector\\\": \\\"single\\\", \\\"s\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"d\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"__current_case__\\\": 0}\", \"__rerun_remap_job_id__\": null, \"advanced\": \"{\\\"minCharge\\\": \\\"2\\\", \\\"protocol\\\": \\\"4\\\", \\\"minLength\\\": \\\"6\\\", \\\"num_ptms\\\": \\\"2\\\", \\\"m\\\": \\\"3\\\", \\\"n\\\": \\\"1\\\", \\\"isotope_low\\\": \\\"0\\\", \\\"maxCharge\\\": \\\"3\\\", \\\"maxLength\\\": \\\"40\\\", \\\"addFeatures\\\": \\\"false\\\", \\\"isotope_high\\\": \\\"1\\\"}\"}", 
+            "tool_version": "0.2", 
+            "type": "tool", 
+            "uuid": "49e29543-9105-4201-abf1-13cf7ac64067", 
+            "workflow_outputs": []
+        }, 
+        "5": {
+            "annotation": "", 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/idpqonvert/idpqonvert/3.0.11579.0", 
+            "errors": null, 
+            "id": 5, 
+            "input_connections": {
+                "ProteinDatabase": {
+                    "id": 1, 
+                    "output_name": "output"
+                }, 
+                "input": {
+                    "id": 4, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool idpQonvert", 
+                    "name": "ProteinDatabase"
+                }, 
+                {
+                    "description": "runtime parameter for tool idpQonvert", 
+                    "name": "input"
+                }
+            ], 
+            "label": null, 
+            "name": "idpQonvert", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "idpdb"
+                }
+            ], 
+            "position": {
+                "left": 774.5, 
+                "top": 246.5
+            }, 
+            "post_job_actions": {
+                "HideDatasetActionoutput": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output"
+                }, 
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "#{input|basename}.idpDB"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/idpqonvert/idpqonvert/3.0.11579.0", 
+            "tool_shed_repository": {
+                "changeset_revision": "fb6ce5041417", 
+                "name": "idpqonvert", 
+                "owner": "galaxyp", 
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            }, 
+            "tool_state": "{\"scoring\": \"{\\\"ms-gf_specevalue\\\": {\\\"ms-gf_specevalue_type\\\": \\\"off\\\", \\\"ms-gf_specevalue_weight\\\": \\\"-1.0\\\"}, \\\"comet_deltacn\\\": {\\\"comet_deltacn_type\\\": \\\"off\\\", \\\"comet_deltacn_weight\\\": \\\"1.0\\\"}, \\\"myrimatch_mvh\\\": {\\\"myrimatch_mvh_weight\\\": \\\"1.0\\\", \\\"myrimatch_mvh_type\\\": \\\"off\\\"}, \\\"extra_score\\\": [], \\\"sequest_xcorr\\\": {\\\"sequest_xcorr_weight\\\": \\\"1.0\\\", \\\"sequest_xcorr_type\\\": \\\"off\\\"}, \\\"xtandem_hyperscore\\\": {\\\"xtandem_hyperscore_type\\\": \\\"off\\\", \\\"xtandem_hyperscore_weight\\\": \\\"1.0\\\"}, \\\"xtandem_expect\\\": {\\\"xtandem_expect_weight\\\": \\\"-1.0\\\", \\\"xtandem_expect_type\\\": \\\"off\\\"}, \\\"comet_expect\\\": {\\\"comet_expect_type\\\": \\\"off\\\", \\\"comet_expect_weight\\\": \\\"-1.0\\\"}, \\\"sequest_deltacn\\\": {\\\"sequest_deltacn_type\\\": \\\"off\\\", \\\"sequest_deltacn_weight\\\": \\\"1.0\\\"}, \\\"comet_xcorr\\\": {\\\"comet_xcorr_weight\\\": \\\"1.0\\\", \\\"comet_xcorr_type\\\": \\\"off\\\"}, \\\"mascot_score\\\": {\\\"mascot_score_type\\\": \\\"off\\\", \\\"mascot_score_weight\\\": \\\"1.0\\\"}, \\\"xcorr\\\": {\\\"xcorr_weight\\\": \\\"1.0\\\", \\\"xcorr_type\\\": \\\"off\\\"}}\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"DecoyPrefix\": \"\\\"\\\"\", \"MaxFDR\": \"\\\"0.05\\\"\", \"advanced_options\": \"{\\\"MinPartitionSize\\\": \\\"10\\\", \\\"PolynomialDegree\\\": \\\"3\\\", \\\"Kernel\\\": \\\"Linear\\\", \\\"MassErrorHandling\\\": \\\"Ignore\\\", \\\"MaxResultRank\\\": \\\"2\\\", \\\"RerankMatches\\\": \\\"false\\\", \\\"MaxImportFDR\\\": \\\"0.25\\\", \\\"MaxTrainingRank\\\": \\\"1\\\", \\\"MissedCleavagesHandling\\\": \\\"Ignore\\\", \\\"QonverterMethod\\\": \\\"MonteCarlo\\\", \\\"TruePositiveThreshold\\\": \\\"0.01\\\", \\\"ChargeStateHandling\\\": \\\"Partition\\\", \\\"TerminalSpecificityHandling\\\": \\\"Partition\\\", \\\"Nu\\\": \\\"-0.5\\\", \\\"Gamma\\\": \\\"5.0\\\", \\\"SVMType\\\": \\\"CSVC\\\"}\", \"ProteinDatabase\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}", 
+            "tool_version": "3.0.11579.0", 
+            "type": "tool", 
+            "uuid": "34a121b2-a0ec-4558-a500-4151f1814fc7", 
+            "workflow_outputs": []
+        }, 
+        "6": {
+            "annotation": "", 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/idpassemble/idpassemble/3.0.11579.0", 
+            "errors": null, 
+            "id": 6, 
+            "input_connections": {
+                "input": {
+                    "id": 5, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool idpAssemble", 
+                    "name": "input"
+                }
+            ], 
+            "label": null, 
+            "name": "idpAssemble", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "idpdb"
+                }
+            ], 
+            "position": {
+                "left": 1098.5, 
+                "top": 322.5
+            }, 
+            "post_job_actions": {
+                "HideDatasetActionoutput": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output"
+                }, 
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "raw_assembly_TMT10.idpDB"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/idpassemble/idpassemble/3.0.11579.0", 
+            "tool_shed_repository": {
+                "changeset_revision": "39eaac8f3f42", 
+                "name": "idpassemble", 
+                "owner": "galaxyp", 
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            }, 
+            "tool_state": "{\"__page__\": null, \"MaxFDRScore\": \"\\\"0.05\\\"\", \"MinSpectraPerDistinctMatch\": \"\\\"1\\\"\", \"__rerun_remap_job_id__\": null, \"IsobaricSampleMappingCondition\": \"{\\\"__current_case__\\\": 1, \\\"HasIsobaricSampleMapping\\\": \\\"false\\\"}\", \"MinSpectraPerDistinctPeptide\": \"\\\"1\\\"\", \"filter_at_gene_level_condition\": \"{\\\"FilterAtGeneLevel\\\": \\\"false\\\", \\\"MinSpectra\\\": \\\"2\\\", \\\"MinAdditionalPeptides\\\": \\\"1\\\", \\\"MinDistinctPeptides\\\": \\\"2\\\", \\\"__current_case__\\\": 1}\", \"AssignSourceHierarchyCondition\": \"{\\\"HasAssignSourceHierarchy\\\": \\\"false\\\", \\\"__current_case__\\\": 1}\", \"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"MaxProteinGroupsPerPeptide\": \"\\\"10\\\"\"}", 
+            "tool_version": "3.0.11579.0", 
+            "type": "tool", 
+            "uuid": "c8db4418-c42f-45ac-9a79-fe48fd7a12c5", 
+            "workflow_outputs": []
+        }, 
+        "7": {
+            "annotation": "", 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/idpqonvert/idpqonvertEmbedder/3.0.11579.0", 
+            "errors": null, 
+            "id": 7, 
+            "input_connections": {
+                "input": {
+                    "id": 6, 
+                    "output_name": "output"
+                }, 
+                "use_raw_data_condition|input_raw": {
+                    "id": 0, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool idpEmbedder", 
+                    "name": "use_raw_data_condition"
+                }, 
+                {
+                    "description": "runtime parameter for tool idpEmbedder", 
+                    "name": "input"
+                }
+            ], 
+            "label": null, 
+            "name": "idpEmbedder", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "idpdb"
+                }
+            ], 
+            "position": {
+                "left": 1114.5, 
+                "top": 439.5
+            }, 
+            "post_job_actions": {
+                "HideDatasetActionoutput": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "output"
+                }, 
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "raw_assembly_TMT10_embedded.idpDB"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/idpqonvert/idpqonvertEmbedder/3.0.11579.0", 
+            "tool_shed_repository": {
+                "changeset_revision": "fb6ce5041417", 
+                "name": "idpqonvert", 
+                "owner": "galaxyp", 
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            }, 
+            "tool_state": "{\"__page__\": null, \"use_raw_data_condition\": \"{\\\"use_raw_data\\\": \\\"true\\\", \\\"__current_case__\\\": 1, \\\"EmbedSpectrumSources\\\": \\\"false\\\", \\\"EmbedSpectrumScanTimes\\\": \\\"true\\\", \\\"input_raw\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"quantitation_method_condition\\\": {\\\"QuantitationMethod\\\": \\\"TMT10plex\\\", \\\"ReporterIonMzTolerance_units\\\": \\\"daltons\\\", \\\"ReporterIonMzTolerance\\\": \\\"0.003\\\", \\\"__current_case__\\\": 4, \\\"NormalizeReporterIons\\\": \\\"false\\\"}}\", \"__rerun_remap_job_id__\": null, \"EmbedGeneMetadata\": \"\\\"true\\\"\", \"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}", 
+            "tool_version": "3.0.11579.0", 
+            "type": "tool", 
+            "uuid": "0ad95feb-40a5-46d9-9408-5209c14316bd", 
+            "workflow_outputs": []
+        }, 
+        "8": {
+            "annotation": "", 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/idpassemble/idpassemble/3.0.11579.0", 
+            "errors": null, 
+            "id": 8, 
+            "input_connections": {
+                "AssignSourceHierarchyCondition|AssignSourceHierarchy": {
+                    "id": 2, 
+                    "output_name": "output"
+                }, 
+                "IsobaricSampleMappingCondition|IsobaricSampleMapping": {
+                    "id": 3, 
+                    "output_name": "output"
+                }, 
+                "input": {
+                    "id": 7, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool idpAssemble", 
+                    "name": "IsobaricSampleMappingCondition"
+                }, 
+                {
+                    "description": "runtime parameter for tool idpAssemble", 
+                    "name": "AssignSourceHierarchyCondition"
+                }, 
+                {
+                    "description": "runtime parameter for tool idpAssemble", 
+                    "name": "input"
+                }
+            ], 
+            "label": null, 
+            "name": "idpAssemble", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "idpdb"
+                }
+            ], 
+            "position": {
+                "left": 1117.5, 
+                "top": 580.5
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "mapped_assembly_TMT10_embedded.idpDB"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/idpassemble/idpassemble/3.0.11579.0", 
+            "tool_shed_repository": {
+                "changeset_revision": "39eaac8f3f42", 
+                "name": "idpassemble", 
+                "owner": "galaxyp", 
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            }, 
+            "tool_state": "{\"__page__\": null, \"MaxFDRScore\": \"\\\"0.05\\\"\", \"MinSpectraPerDistinctMatch\": \"\\\"1\\\"\", \"__rerun_remap_job_id__\": null, \"IsobaricSampleMappingCondition\": \"{\\\"IsobaricSampleMapping\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"__current_case__\\\": 0, \\\"HasIsobaricSampleMapping\\\": \\\"true\\\"}\", \"MinSpectraPerDistinctPeptide\": \"\\\"1\\\"\", \"filter_at_gene_level_condition\": \"{\\\"FilterAtGeneLevel\\\": \\\"false\\\", \\\"MinSpectra\\\": \\\"2\\\", \\\"MinAdditionalPeptides\\\": \\\"1\\\", \\\"MinDistinctPeptides\\\": \\\"2\\\", \\\"__current_case__\\\": 1}\", \"AssignSourceHierarchyCondition\": \"{\\\"AssignSourceHierarchy\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"HasAssignSourceHierarchy\\\": \\\"true\\\", \\\"__current_case__\\\": 0}\", \"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"MaxProteinGroupsPerPeptide\": \"\\\"10\\\"\"}", 
+            "tool_version": "3.0.11579.0", 
+            "type": "tool", 
+            "uuid": "1c257d61-48b1-4d72-9e4b-efb5f292f3ce", 
+            "workflow_outputs": [
+                {
+                    "label": null, 
+                    "output_name": "output", 
+                    "uuid": "29eae1a4-a21c-4ca4-923e-8f32eb47fa08"
+                }
+            ]
+        }, 
+        "9": {
+            "annotation": "", 
+            "content_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/idpquery/idpquery/3.0.11579.0", 
+            "errors": null, 
+            "id": 9, 
+            "input_connections": {
+                "input": {
+                    "id": 8, 
+                    "output_name": "output"
+                }
+            }, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool idpQuery", 
+                    "name": "input"
+                }
+            ], 
+            "label": null, 
+            "name": "idpQuery", 
+            "outputs": [
+                {
+                    "name": "output", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 1125, 
+                "top": 765.5
+            }, 
+            "post_job_actions": {
+                "RenameDatasetActionoutput": {
+                    "action_arguments": {
+                        "newname": "#{input|basename}_ProteinGroup_PivotTMTByGroup.tsv"
+                    }, 
+                    "action_type": "RenameDatasetAction", 
+                    "output_name": "output"
+                }
+            }, 
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/galaxyp/idpquery/idpquery/3.0.11579.0", 
+            "tool_shed_repository": {
+                "changeset_revision": "66c38e74d1ae", 
+                "name": "idpquery", 
+                "owner": "galaxyp", 
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            }, 
+            "tool_state": "{\"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"__rerun_remap_job_id__\": null, \"group_by\": \"{\\\"report_columns\\\": [\\\"Accession\\\", \\\"GeneId\\\", \\\"DistinctPeptides\\\", \\\"DistinctMatches\\\", \\\"FilteredSpectra\\\", \\\"PivotTMTByGroup\\\"], \\\"__current_case__\\\": 1, \\\"group_by_value\\\": \\\"ProteinGroup\\\"}\", \"__page__\": null}", 
+            "tool_version": "3.0.11579.0", 
+            "type": "tool", 
+            "uuid": "4286a251-dc1b-4c25-945d-f0a65d5b729e", 
+            "workflow_outputs": [
+                {
+                    "label": null, 
+                    "output_name": "output", 
+                    "uuid": "a0a87d84-290e-4809-a559-d3885c22cc3d"
+                }
+            ]
+        }
+    }, 
+    "uuid": "2d5f037e-aa41-4b9f-aaa6-a014ec3aa51e"
+}
