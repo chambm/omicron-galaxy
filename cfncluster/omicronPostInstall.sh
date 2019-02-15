@@ -105,6 +105,7 @@ EOF
 
   # HACK: fix nodewatcher.py to work with UPDATE_COMPLETE stacks (this is fixed in AWS parallel-cluster, but we're still on cfncluster)
   sed -i.bak "s/'CREATE_COMPLETE'/'CREATE_COMPLETE' or stacks['Stacks'][0]['StackStatus'] == 'UPDATE_COMPLETE'/" /usr/local/lib/python2.7/site-packages/nodewatcher/nodewatcher.py
+  supervisorctl restart nodewatcher
   
   # Use NFS version 4 instead of 3 and turn relatime on for root drive
   sed -i.bak "s/defaults,noatime/defaults/" /etc/fstab
