@@ -103,6 +103,9 @@ EOF
   cp /export/omicron-data.duckdns.org.conf /etc/cvmfs/config.d
   cp /export/default.local /etc/cvmfs
 
+  # HACK: fix nodewatcher.py to work with UPDATE_COMPLETE stacks (this is fixed in AWS parallel-cluster, but we're still on cfncluster)
+  sed -i.bak "s/'CREATE_COMPLETE'/'CREATE_COMPLETE' or stacks['Stacks'][0]['StackStatus'] == 'UPDATE_COMPLETE'/" /usr/local/lib/python2.7/site-packages/nodewatcher/nodewatcher.py
+  
   # Use NFS version 4 instead of 3 and turn relatime on for root drive
   sed -i.bak "s/defaults,noatime/defaults/" /etc/fstab
   sed -i.bak "s/\(vers=3\)/vers=4/" /etc/fstab
