@@ -2,7 +2,7 @@
 #
 # VERSION       Galaxy-central
 
-FROM bgruening/galaxy-stable
+FROM bgruening/galaxy-stable:19.01
 
 MAINTAINER Matt Chambers, matt.chambers@vanderbilt.edu
 
