@@ -13,15 +13,47 @@
         <handler id="handler0" tags="handlers"/>
         <handler id="handler1" tags="handlers"/>
     </handlers>
-    <destinations default="cluster">
+     <destinations default="cluster">
         <destination id="cluster" runner="slurm">
-            <param id="nativeSpecification">--time=24:00:00 --mem-per-cpu=4092 -s --ntasks=2</param>
+            <param id="nativeSpecification">--time=24:00:00 --mem-per-cpu=2048 -s -n 4 -p compute</param>
             <param id="embed_metadata_in_job">False</param>
+            <param id="request_cpus">4</param>
+            <param id="docker_run_extra_arguments">--memory 14G</param>
+            <param id="docker_memory">14G</param>
+            <param id="docker_enabled">true</param>
+            <!--<param id="docker_set_user">0</param>-->
             <env id="GALAXY_SLOTS">4</env>
+            <env id="_JAVA_OPTIONS">-Xmx12G</env>
+            <env id="LC_ALL">en_US.utf-8</env>
+            <env id="LANG">en_US.utf-8</env>
+            <env file="/galaxy_venv/bin/activate" />
+        </destination>
+        <destination id="master" runner="slurm">
+            <param id="nativeSpecification">--time=4:00:00 --mem-per-cpu=1024 -n 1 -p master</param>
+            <param id="embed_metadata_in_job">False</param>
+            <param id="request_cpus">1</param>
+            <param id="docker_enabled">true</param>
+            <param id="docker_set_user">0</param>
+            <env id="GALAXY_SLOTS">1</env>
+            <env id="_JAVA_OPTIONS">-Xmx2G</env>
+            <env id="LC_ALL">en_US.utf-8</env>
+            <env id="LANG">en_US.utf-8</env>
             <env file="/galaxy_venv/bin/activate" />
         </destination>
     </destinations>
     <tools>
+        <tool id="__SET_METADATA__" destination="master"/>
+        <tool id="upload1" destination="master"/>
+        <tool id="Filter1" destination="master"/>
+        <tool id="sort1" destination="master"/>
+        <tool id="xy_plot" destination="master"/>
+        <tool id="scatterplot" destination="master"/>
+        <tool id="suite_ggplot2" destination="master"/>
+        <tool id="ggplot2_point" destination="master"/>
+        <tool id="query_tabular" destination="master"/>
+        <tool id="sqlite_to_tabular" destination="master"/>
+        <tool id="Summary_Statistics1" destination="master"/>
+        
         <!-- all tools go to the CfnCluster
         <tool id="myrimatch" destination="cluster"/>
         <tool id="samtools_mpileup" destination="cluster"/>
