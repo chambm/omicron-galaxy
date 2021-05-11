@@ -2,7 +2,7 @@
 #
 # VERSION       Galaxy-central
 
-FROM quay.io/bgruening/galaxy:18.09
+FROM quay.io/bgruening/galaxy:19.09
 
 MAINTAINER Matt Chambers, matt.chambers42@gmail.com
 
@@ -82,18 +82,11 @@ COPY default.local /etc/cvmfs/
 # 3. Add 'Input is VCF' option to the bcftools_view tool
 # 4. Make TopHat2 wrapper ignore Exception and Error messages in the log text - only non-zero exit code will be fatal.
 # 5. Make supervisor web service only listen on loopback IP
-# 6. Add AutoFS service for CVMFS
 RUN sed -i.bak 's/<\/tables>/    <table name="hisat2_indexes" comment_char="#"><columns>value, dbkey, name, path<\/columns><file path="\/cvmfs\/data.galaxyproject.org\/managed\/location\/hisat2_indexes.loc" \/><\/table>\n<\/tables>/' $GALAXY_CONFIG_TOOL_DATA_TABLE_CONFIG_PATH && \
     sed -i.bak 's/<\/tables>/    <table name="customProDB" comment_char="#"><columns>value, dbkey, name, path<\/columns><file path="\/cvmfs\/omicron-data.duckdns.org\/customProDB\/customProDB.loc" \/><\/table>\n<\/tables>/' $GALAXY_CONFIG_TOOL_DATA_TABLE_CONFIG_PATH && \
     sed -i.bak 's/^\(PassivePorts\).*/\1 30000 30100/' /etc/proftpd/proftpd.conf && \
     sed -i.bak 's/\(\s*\)\(<regex match="Exception|Error" source="both"\) level="fatal" description="Tool execution failed"/\1<exit_code range="1:" level="fatal" description="Tool execution failed" \/>\n\1\2 level="log" description="Warning"/' $GALAXY_ROOT/../shed_tools/toolshed.g2.bx.psu.edu/repos/devteam/tophat2/16c4255042be/tophat2/tophat2_wrapper.xml && \
-    sed -i.bak 's/0.0.0.0:9002/127.0.0.1:9002/' /etc/supervisor/conf.d/galaxy.conf && \
-    echo '[program:autofs]\n\
-user            = root\n\
-command         = /usr/sbin/automount -f\n\
-autostart       = true\n\
-autorestart     = true\n'\
-    > /etc/supervisor/conf.d/autofs.conf
+    sed -i.bak 's/0.0.0.0:9002/127.0.0.1:9002/' /etc/supervisor/conf.d/galaxy.conf
 
 # Container Style
 #ADD GalaxyDocker.png $GALAXY_CONFIG_DIR/web/welcome_image.png
