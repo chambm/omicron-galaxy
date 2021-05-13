@@ -1,6 +1,6 @@
 #!/bin/bash
 #set -e
-. /opt/cfncluster/cfnconfig | . /opt/parallelcluster/cfnconfig
+. /opt/cfncluster/cfnconfig || . /opt/parallelcluster/cfnconfig
 
 if [ "$cfn_node_type" == "MasterServer" ]; then
   echo Master
