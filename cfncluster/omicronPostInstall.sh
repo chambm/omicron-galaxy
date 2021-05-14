@@ -2,6 +2,8 @@
 #set -e
 . /opt/cfncluster/cfnconfig || . /opt/parallelcluster/cfnconfig
 
+omicron_release="update_19.09"
+
 if [ "$cfn_node_type" == "MasterServer" ]; then
   echo Master
 
@@ -13,8 +15,10 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
   service docker start
   gpasswd -a ec2-user docker
   useradd -u 1450 galaxy
-  #ln -s /export/galaxy-central /galaxy-central
-  #ln -s /export/shed_tools /shed_tools
+
+  chkconfig --level 2345 docker on
+  ln -s /export/galaxy-central /galaxy-central
+  ln -s /export/shed_tools /shed_tools
 
   # --privileged required for autofs/cvmfs to work
   docker run --name omicron -d --restart=on-failure:10 --net=host --privileged \
@@ -24,7 +28,7 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
     -e "NONUSE=reports,slurmd,slurmctld,condor" \
     -e GALAXY_CONFIG_FTP_UPLOAD_SITE=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) \
     -e GALAXY_CONFIG_CLEANUP_JOB=onsuccess \
-    chambm/omicron-cfncluster:release_18.09
+    chambm/omicron-cfncluster:$omicron_release
 
   while
     echo "Waiting for Galaxy to start"
@@ -62,7 +66,7 @@ if [ "$cfn_node_type" == "ComputeFleet" ]; then
   ln -s /export/shed_tools /shed_tools
 
   mkdir /galaxy_venv
-  wget https://raw.githubusercontent.com/chambm/omicron-galaxy/update_18.09/cfncluster/requirements.txt -O /galaxy_venv/requirements.txt && \
+  wget https://raw.githubusercontent.com/chambm/omicron-galaxy/$omicron_release/cfncluster/requirements.txt -O /galaxy_venv/requirements.txt && \
   chown -R $(id -u slurm):$(id -g slurm) /galaxy_venv && \
   virtualenv /galaxy_venv && \
   . /galaxy_venv/bin/activate && \
@@ -102,11 +106,7 @@ EOF
   cp /export/omicron-data.duckdns.org.pub /etc/cvmfs/keys
   cp /export/omicron-data.duckdns.org.conf /etc/cvmfs/config.d
   cp /export/default.local /etc/cvmfs
-
-  # HACK: fix nodewatcher.py to work with UPDATE_COMPLETE stacks (this is fixed in AWS parallel-cluster, but we're still on cfncluster)
-  sed -i.bak "s/'CREATE_COMPLETE'/'CREATE_COMPLETE' or stacks['Stacks'][0]['StackStatus'] == 'UPDATE_COMPLETE'/" /usr/local/lib/python2.7/site-packages/nodewatcher/nodewatcher.py
-  supervisorctl restart nodewatcher
-  
+ 
   # Use NFS version 4 instead of 3 and turn relatime on for root drive
   sed -i.bak "s/defaults,noatime/defaults/" /etc/fstab
   sed -i.bak "s/\(vers=3\)/vers=4/" /etc/fstab

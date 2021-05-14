@@ -18,12 +18,12 @@
             <param id="nativeSpecification">--time=24:00:00 --mem-per-cpu=2048 -s -n 4 -p compute</param>
             <param id="embed_metadata_in_job">False</param>
             <param id="request_cpus">4</param>
-            <param id="docker_run_extra_arguments">--memory 14G</param>
-            <param id="docker_memory">14G</param>
+            <param id="docker_run_extra_arguments">--memory 7G</param>
+            <param id="docker_memory">7G</param>
             <param id="docker_enabled">true</param>
             <!--<param id="docker_set_user">0</param>-->
             <env id="GALAXY_SLOTS">4</env>
-            <env id="_JAVA_OPTIONS">-Xmx12G</env>
+            <env id="_JAVA_OPTIONS">-Xmx7G</env>
             <env id="LC_ALL">en_US.utf-8</env>
             <env id="LANG">en_US.utf-8</env>
             <env file="/galaxy_venv/bin/activate" />
@@ -53,7 +53,7 @@
         <tool id="query_tabular" destination="master"/>
         <tool id="sqlite_to_tabular" destination="master"/>
         <tool id="Summary_Statistics1" destination="master"/>
-        
+
         <!-- all tools go to the CfnCluster
         <tool id="myrimatch" destination="cluster"/>
         <tool id="samtools_mpileup" destination="cluster"/>

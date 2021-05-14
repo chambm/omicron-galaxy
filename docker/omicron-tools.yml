@@ -42,18 +42,18 @@ install_resolver_dependencies: true
 install_tool_dependencies: false
 
 tools:
-- {owner: 'galaxyp'         ,name: 'regex_find_replace'                             ,revisions: ['209b7c5ee9d7']  ,tool_panel_section_label: 'Text Manipulation'}
+- {owner: 'galaxyp'         ,name: 'regex_find_replace'                             ,revisions: ['ae8c4b2488e7']  ,tool_panel_section_label: 'Text Manipulation'}
 - {owner: 'jjohnson'        ,name: 'query_tabular'                                  ,revisions: ['5bb148ee644a']  ,tool_panel_section_label: 'Text Manipulation'}
 - {owner: 'devteam'         ,name: 'fastq_groomer'                                  ,revisions: ['71e5fa25b8a2']  ,tool_panel_section_label: 'FASTX'}
 - {owner: 'galaxyp'         ,name: 'fasta_merge_files_and_filter_unique_sequences'  ,revisions: ['650d553c1fda']  ,tool_panel_section_label: 'FASTX'}
 - {owner: 'galaxyp'         ,name: 'custom_pro_db'                                  ,revisions: ['a3a66063d460']  ,tool_panel_section_label: 'Proteogenomics'}
 - {owner: 'galaxyp'         ,name: 'psm_to_sam'                                     ,revisions: ['16c4cc7793e9']  ,tool_panel_section_label: 'Proteogenomics'}
-- {owner: 'galaxyp'         ,name: 'msconvert'                                      ,revisions: ['dd4ba10d0c45']  ,tool_panel_section_label: 'Proteogenomics'}
-- {owner: 'galaxyp'         ,name: 'idpquery'                                       ,revisions: ['66c38e74d1ae']  ,tool_panel_section_label: 'Proteogenomics'}
-- {owner: 'galaxyp'         ,name: 'idpassemble'                                    ,revisions: ['39eaac8f3f42']  ,tool_panel_section_label: 'Proteogenomics'}
-- {owner: 'galaxyp'         ,name: 'idpqonvert'                                     ,revisions: ['fb6ce5041417']  ,tool_panel_section_label: 'Proteogenomics'}
-- {owner: 'galaxyp'         ,name: 'myrimatch'                                      ,revisions: ['1881935e5351']  ,tool_panel_section_label: 'Proteogenomics'}
-- {owner: 'galaxyp'         ,name: 'msgfplus'                                       ,revisions: ['58f9cf0de6d4']  ,tool_panel_section_label: 'Proteogenomics'}
+- {owner: 'galaxyp'         ,name: 'msconvert'                                      ,revisions: ['6153e8ada1ee']  ,tool_panel_section_label: 'Proteogenomics'}
+- {owner: 'galaxyp'         ,name: 'idpquery'                                       ,revisions: ['6da05a8b5d8b']  ,tool_panel_section_label: 'Proteogenomics'}
+- {owner: 'galaxyp'         ,name: 'idpassemble'                                    ,revisions: ['0fde0095493f']  ,tool_panel_section_label: 'Proteogenomics'}
+- {owner: 'galaxyp'         ,name: 'idpqonvert'                                     ,revisions: ['3a95a7f42698']  ,tool_panel_section_label: 'Proteogenomics'}
+- {owner: 'galaxyp'         ,name: 'myrimatch'                                      ,revisions: ['cb97fb3d1b0f']  ,tool_panel_section_label: 'Proteogenomics'}
+- {owner: 'galaxyp'         ,name: 'msgfplus'                                       ,revisions: ['a26f5807eb85']  ,tool_panel_section_label: 'Proteogenomics'}
 - {owner: 'devteam'         ,name: 'fastqc'                                         ,revisions: ['9337dd1fbc66']  ,tool_panel_section_label: 'NGS: QC'}
 - {owner: 'engineson'       ,name: 'multiqc'                                        ,revisions: ['5e4080791d90']  ,tool_panel_section_label: 'NGS: QC'}
 - {owner: 'devteam'         ,name: 'tophat2'                                        ,revisions: ['16c4255042be']  ,tool_panel_section_label: 'NGS: Mapping'}
@@ -64,4 +64,4 @@ tools:
 - {owner: 'devteam'         ,name: 'vcffilter'                                      ,revisions: ['952059348a30']  ,tool_panel_section_label: 'NGS: Variant calling'}
 - {owner: 'galaxyp'         ,name: 'custom_pro_db_annotation_data_manager'}
 - {owner: 'devteam'         ,name: 'data_manager_sam_fasta_index_builder'}
-- {owner: 'devteam'         ,name: 'data_manager_fetch_genome_all_fasta'}
+- {owner: 'devteam'         ,name: 'data_manager_fetch_genome_dbkeys_all_fasta'}
