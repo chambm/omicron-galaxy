@@ -14,22 +14,24 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
   fi
 
   # generate a clustermgtd-compatible node name
-  #master_type=$(curl http://169.254.169.254/latest/meta-data/instance-type)
-  #master_name=$(echo "master-dy-$master_type-1" | tr -d '.')
-  #master_memory=$(awk '/MemTotal/ { printf "%d \n", $2/1024 * 0.75 }' /proc/meminfo)
+  master_type=$(curl http://169.254.169.254/latest/meta-data/instance-type)
+  master_name=$(echo "master-dy-$master_type-1" | tr -d '.')
+  master_memory=$(awk '/MemTotal/ { printf "%d \n", $2/1024 * 0.75 }' /proc/meminfo)
   
   # do not use suspend/resume scripts for master node
-  #echo "SuspendExcNodes=$master_name" >> /opt/slurm/etc/slurm.conf
+  echo "SuspendExcNodes=$master_name" >> /opt/slurm/etc/slurm.conf
   
   # add definition for master node
-  #echo "NodeName=$master_name CPUs=2 RealMemory=$master_memory State=UNKNOWN Feature=local,$master_type" >> /opt/slurm/etc/slurm.conf
+  echo "NodeName=$master_name CPUs=2 RealMemory=$master_memory State=UNKNOWN Feature=local,$master_type" >> /opt/slurm/etc/slurm.conf
   
   # add partition for master node
-  #echo "PartitionName=master Nodes=$master_name MaxTime=INFINITE DefMemPerCPU=2048 Default=NO" >> /opt/slurm/etc/slurm.conf
+  echo "PartitionName=master Nodes=$master_name MaxTime=INFINITE DefMemPerCPU=2048 Default=NO" >> /opt/slurm/etc/slurm.conf
   
   # add node name to hosts file
-  #sed -i "$ s/$/ $master_name/" /etc/hosts
-  
+  sed -i "$ s/$/ $master_name/" /etc/hosts
+
+  mkdir /export/nginx_upload_store
+
   #echo manual | sudo tee /etc/init.d/httpd.override
   chkconfig --level 2345 httpd off
   service httpd stop
@@ -40,6 +42,8 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
   useradd -u 1450 galaxy
 
   chkconfig --level 2345 docker on
+
+  mkdir /export/nginx_upload_store/
 
   # --privileged required for autofs/cvmfs to work
   docker run --name omicron -d --restart=on-failure:10 --net=host --privileged \
