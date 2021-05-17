@@ -2,7 +2,8 @@
 #set -e
 . /opt/cfncluster/cfnconfig || . /opt/parallelcluster/cfnconfig
 
-omicron_release="update_19.09"
+git_branch="update_19.09"
+docker_tag="release_19.09"
 
 if [ "$cfn_node_type" == "MasterServer" ]; then
   echo Master
@@ -28,7 +29,7 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
     -e "NONUSE=reports,slurmd,slurmctld,condor" \
     -e GALAXY_CONFIG_FTP_UPLOAD_SITE=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) \
     -e GALAXY_CONFIG_CLEANUP_JOB=onsuccess \
-    chambm/omicron-cfncluster:$omicron_release
+    chambm/omicron-cfncluster:$docker_tag
 
   while
     echo "Waiting for Galaxy to start"
@@ -66,7 +67,7 @@ if [ "$cfn_node_type" == "ComputeFleet" ]; then
   ln -s /export/shed_tools /shed_tools
 
   mkdir /galaxy_venv
-  wget https://raw.githubusercontent.com/chambm/omicron-galaxy/$omicron_release/cfncluster/requirements.txt -O /galaxy_venv/requirements.txt && \
+  wget https://raw.githubusercontent.com/chambm/omicron-galaxy/$git_branch/cfncluster/requirements.txt -O /galaxy_venv/requirements.txt && \
   chown -R $(id -u slurm):$(id -g slurm) /galaxy_venv && \
   virtualenv /galaxy_venv && \
   . /galaxy_venv/bin/activate && \
