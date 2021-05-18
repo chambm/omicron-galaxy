@@ -30,6 +30,11 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
   # add node name to hosts file
   sed -i "$ s/$/ $master_name/" /etc/hosts
 
+  # enable slurmd service
+  cp /etc/chef/cookbooks/aws-parallelcluster/files/default/slurmd.service /etc/systemd/system
+  service slurmd start
+  service slurmctld restart
+
   mkdir /export/nginx_upload_store
 
   #echo manual | sudo tee /etc/init.d/httpd.override
@@ -43,8 +48,6 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
 
   chkconfig --level 2345 docker on
 
-  mkdir /export/nginx_upload_store/
-
   # --privileged required for autofs/cvmfs to work
   docker run --name omicron -d --restart=on-failure:10 --net=host --privileged \
     -v /export/:/export/ \
@@ -55,6 +58,18 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
     -e GALAXY_CONFIG_CLEANUP_JOB=onsuccess \
     chambm/omicron-cfncluster:$docker_tag
 
+  mkdir /galaxy_venv && \
+  wget https://raw.githubusercontent.com/chambm/omicron-galaxy/$git_branch/cfncluster/requirements.txt -O /galaxy_venv/requirements.txt && \
+  chown -R $(id -u slurm):$(id -g slurm) /galaxy_venv && \
+  pip install virtualenv && \
+  virtualenv /galaxy_venv && \
+  . /galaxy_venv/bin/activate && \
+  pip install --upgrade pip && \
+  pip install galaxy-lib && \
+  pip install -r /galaxy_venv/requirements.txt --index-url https://wheels.galaxyproject.org/simple && \
+  deactivate && \  
+  tar cjf /export/galaxy_venv.tbz2 /galaxy_venv
+  
   while
     echo "Waiting for Galaxy to start"
     [[ $(docker exec omicron supervisorctl status galaxy:galaxy_web | grep -o RUNNING) != "RUNNING" ]]
@@ -63,7 +78,7 @@ if [ "$cfn_node_type" == "MasterServer" ]; then
   done
   
   ln -s /export/galaxy-central /galaxy-central
-  ln -s /export/shed_tools /shed_tools
+  ln -s /export/galaxy-central/database/shed_tools /shed_tools
   
   # Copy slurm_prolog.sh script to shared path and edit slurm.conf to use the prolog for fully caching input files on compute nodes
   docker cp omicron:/usr/bin/slurm_prolog.sh /export
@@ -93,17 +108,9 @@ if [ "$cfn_node_type" == "ComputeFleet" ]; then
 
   useradd -u 1450 galaxy
   ln -s /export/galaxy-central /galaxy-central
-  ln -s /export/shed_tools /shed_tools
+  ln -s /export/galaxy-central/database/shed_tools /shed_tools
 
-  mkdir /galaxy_venv
-  wget https://raw.githubusercontent.com/chambm/omicron-galaxy/$git_branch/cfncluster/requirements.txt -O /galaxy_venv/requirements.txt && \
-  chown -R $(id -u slurm):$(id -g slurm) /galaxy_venv && \
-  virtualenv /galaxy_venv && \
-  . /galaxy_venv/bin/activate && \
-  pip install --upgrade pip && \
-  pip install galaxy-lib && \
-  pip install -r /galaxy_venv/requirements.txt --index-url https://wheels.galaxyproject.org/simple && \
-  deactivate
+  cp /export/galaxy_venv.tbz2 / && cd / && tar xjf galaxy_venv.tbz2
 
   yum install -y docker
   service docker start
