@@ -15,7 +15,7 @@
     </handlers>
      <destinations default="cluster">
         <destination id="cluster" runner="slurm">
-            <param id="nativeSpecification">--time=24:00:00 --mem-per-cpu=2048 -s -n 4 -p compute</param>
+            <param id="nativeSpecification">--time=24:00:00 -s -n 4 -p compute</param>
             <param id="embed_metadata_in_job">False</param>
             <param id="request_cpus">4</param>
             <param id="docker_run_extra_arguments">--memory 7G</param>
