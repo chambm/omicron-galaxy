@@ -2,17 +2,9 @@
 #
 # VERSION       Galaxy-central
 
-FROM chambm/omicron-galaxy:release_18.09
+FROM chambm/omicron-galaxy:release_19.09
 
-MAINTAINER Matt Chambers, matt.chambers@vanderbilt.edu
-
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 5E25F516B04C661B A6BFD95994EE84A6 && \
-    echo "deb http://ppa.launchpad.net/mertes/slurm/ubuntu trusty main" | tee -a /etc/apt/sources.list.d/slurm-trusty.list && \
-    apt-get update -q && \
-    apt-get autoremove -y slurm-llnl slurm-drmaa1 && \
-    apt-get install -y slurm=15-08-7-1-ppa2+2004 libslurm-dev=15-08-7-1-ppa2+2004 && \
-    apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    echo OPTIONS=\"--force\" >> /etc/default/munge
+RUN echo OPTIONS=\"--force\" >> /etc/default/munge
 
 ENV NONUSE=reports,slurmd,slurmctld \
     SLURM_CONF=/opt/slurm/etc/slurm.conf \
@@ -21,10 +13,21 @@ ENV NONUSE=reports,slurmd,slurmctld \
     GALAXY_CONFIG_NGINX_UPLOAD_STORE=/export/nginx_upload_store \
     GALAXY_CONFIG_RETRY_JOB_OUTPUT_COLLECTION=60
 
-RUN mkdir /src && cd /src && curl http://apps.man.poznan.pl/trac/slurm-drmaa/downloads/9 | tar xz && \
-    cd /src/slurm-drmaa-1.0.7 && \
-    ./configure && make && make install && \
-    rm -fr /src
+
+# Copy slurm include/lib from host (to build slurm-drmaa against the same verison of slurm)
+# mkdir slurm && cp -r /opt/slurm/include/ /opt/slurm/lib/ slurm
+ADD slurm/include /usr/local/include/slurm/include
+ADD slurm/lib /usr/local/lib/slurm/lib
+
+# Build slurm-drmaa from source against host's slurm version
+RUN apt-key adv --refresh-keys --keyserver keyserver.ubuntu.com && \
+    apt-get update -q && \
+    apt-get install -y gcc make && \
+    mkdir /src && cd /src && curl -L https://github.com/natefoo/slurm-drmaa/releases/download/1.1.2/slurm-drmaa-1.1.2.tar.gz | tar xz && \
+    cd slurm-drmaa-1.1.2 && \
+    ./configure --with-slurm-inc=/usr/local/include/slurm/include --with-slurm-lib=/usr/local/lib/slurm/lib && \
+    make && make install && \
+    apt-get autoremove -y gcc make && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD job_conf.xml $GALAXY_CONFIG_JOB_CONFIG_FILE
 ADD slurm_prolog.sh /usr/bin/
